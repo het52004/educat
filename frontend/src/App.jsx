@@ -1,11 +1,12 @@
-import './App.css'
+import "./App.css";
+import Signin from "./pages/authentication/Signin";
 
 function App() {
   return (
     <>
-      hello world
+      <Signin />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
