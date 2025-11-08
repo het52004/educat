@@ -1,0 +1,132 @@
+.role-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.role-title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 3rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.role-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.role-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  width: 300px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+.role-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.role-card h2 {
+  font-size: 1.75rem;
+  color: #0056d2;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.role-card p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+@media (max-width: 1024px) {
+  .role-card {
+    width: 280px;
+  }
+}
+
+@media (max-width: 940px) {
+  .role-options {
+    gap: 1.5rem;
+  }
+  .role-card {
+    width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .role-container {
+    padding: 1.5rem;
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding-top: 4rem;
+  }
+
+  .role-title {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .role-options {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .role-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+  }
+
+  .role-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .role-card:active {
+    transform: translateY(1px);
+  }
+
+  .role-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .role-card p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .role-container {
+    padding: 1rem;
+    padding-top: 3rem;
+  }
+
+  .role-title {
+    font-size: 1.75rem;
+  }
+}
