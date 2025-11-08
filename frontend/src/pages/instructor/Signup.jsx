@@ -34,8 +34,8 @@ function Signup() {
           </button>
         </form>
         <div className="auth-form-toggle">
-          <p onClick={()=>navigate("/instructorlogin")}>
-            Already have an account? <a>Login</a>
+          <p>
+            Already have an account? <a onClick={()=>navigate("/instructorlogin")}>Login</a>
           </p>
         </div>
       </div>

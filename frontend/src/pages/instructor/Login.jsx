@@ -22,8 +22,8 @@ function Login() {
             </button>
           </form>
           <div className="auth-form-toggle">
-            <p onClick={()=>navigate("/instructorsignup")}>
-              Don't have an account? <a>Sign Up</a>
+            <p>
+              Don't have an account? <a onClick={()=>navigate("/instructorsignup")}>Sign Up</a>
             </p>
           </div>
         </div>

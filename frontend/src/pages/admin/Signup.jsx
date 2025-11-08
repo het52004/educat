@@ -34,8 +34,8 @@ function Signp() {
           </button>
         </form>
         <div className="auth-form-toggle">
-          <p onClick={() => navigate("/adminlogin")}>
-            Already have an account? <a>Login</a>
+          <p>
+            Already have an account? <a onClick={() => navigate("/adminlogin")}>Login</a>
           </p>
         </div>
       </div>
