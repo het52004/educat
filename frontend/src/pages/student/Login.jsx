@@ -24,6 +24,9 @@ function Login() {
           <p>
             Don't have an account? <a onClick={() => navigate("/studentsignup")}>Sign Up</a>
           </p>
+          <p>
+            Forgot Password? <a onClick={() => navigate("/student/forgot-password")}>Reset Password</a>
+          </p>
         </div>
       </div>
     </div>

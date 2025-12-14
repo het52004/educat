@@ -99,7 +99,7 @@
 }
 
 .auth-form-toggle p {
-  margin: 0;
+  margin: 5px 0; /* small spacing between links */
 }
 
 .auth-form-toggle a {
@@ -107,10 +107,13 @@
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
+  margin-left: 5px; /* small spacing from preceding text */
+  transition: color 0.3s;
 }
 
 .auth-form-toggle a:hover {
   text-decoration: underline;
+  color: #2563eb; /* slightly darker on hover */
 }
 
 @media (max-width: 600px) {

@@ -22,7 +22,10 @@ function Login() {
         </form>
         <div className="auth-form-toggle">
           <p>
-            Don't have an account? <a onClick={()=>navigate("/adminsignup")}>Sign Up</a>
+            Don't have an account? <a onClick={() => navigate("/adminsignup")}>Sign Up</a>
+          </p>
+          <p>
+            Forgot Password? <a onClick={() => navigate("/admin/forgot-password")}>Reset Password</a>
           </p>
         </div>
       </div>
