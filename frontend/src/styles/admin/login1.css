@@ -1,0 +1,174 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
+
+.container {
+  width: 95%;
+  height: 90%;
+  border-radius: 25px;
+  background-color: rgba(247, 247, 247, 0.555);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+}
+
+.leftimg {
+  animation: fadeIn 1s ease;
+}
+
+.leftimg img {
+  max-width: 100%;
+  height: auto;
+}
+
+.login {
+  width: 30%;
+  height: 100%;
+  animation: fadeIn 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main {
+  border-radius: 15px;
+  padding: 30px 0;
+}
+
+h1 {
+  text-align: center;
+  color: #14213d;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  margin-top: 20px;
+  width: 70%;
+  transition: 0.3s ease;
+}
+
+.input:focus {
+  box-shadow: 0px 0px 10px 2px rgb(199, 199, 199);
+  border-color: #fca311;
+  outline: none;
+  width: 80%;
+}
+
+.link {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+a {
+  text-decoration: none;
+  color: #fca311;
+  transition: 0.3s ease;
+}
+
+a:hover {
+  color: #14213d;
+}
+
+.button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 30px;
+  border-radius: 15px;
+  border: 1px solid gray;
+  box-shadow: 0px 0px 3px 1px rgb(192, 192, 192);
+  cursor: pointer;
+  background-color: #14213d;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s ease;
+  width: 105px;
+}
+
+.btn:hover {
+  color: #14213d;
+  background-color: white;
+  width: 130px;
+}
+
+.btn:active {
+  width: 108px;
+}
+
+.signup {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  font-size: 18px;
+}
+
+/* -------------------- RESPONSIVE -------------------- */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    padding: 30px 0;
+  }
+
+  .login {
+    width: 60%;
+  }
+
+  .leftimg {
+    margin-bottom: 20px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .login {
+    width: 90%;
+  }
+
+  .input {
+    width: 85%;
+  }
+
+  .input:focus {
+    width: 90%;
+  }
+
+  .signup {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+}
