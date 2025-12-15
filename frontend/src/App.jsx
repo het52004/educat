@@ -4,7 +4,7 @@ import StudentLogin from "./pages/student/Login";
 import StudentSignup from "./pages/student/Signup";
 import InstructorLogin from "./pages/instructor/Login";
 import InstructorSignup from "./pages/instructor/Signup";
-import AdminLogin from "./pages/admin/Login1";
+import AdminLogin from "./pages/admin/Login";
 import AdminSignup from "./pages/admin/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 
