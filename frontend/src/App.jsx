@@ -7,6 +7,7 @@ import InstructorSignup from "./pages/instructor/Signup";
 import AdminLogin from "./pages/admin/Login";
 import AdminSignup from "./pages/admin/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
+import ContactUs from "./pages/ContactUs";   
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/adminsignup" element={<AdminSignup />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/:role/forgot-password" element={<ForgotPassword />} />
+        <Route path="/contact" element={<ContactUs />} />
       </Routes>
     </BrowserRouter>
   );
