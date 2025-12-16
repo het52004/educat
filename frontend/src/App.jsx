@@ -6,7 +6,7 @@ import InstructorLogin from "./pages/instructor/Login";
 import InstructorSignup from "./pages/instructor/Signup";
 import AdminLogin from "./pages/admin/Login";
 import AdminSignup from "./pages/admin/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
+import StudentDashboard from "./pages/student/Dashboard";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="/instructorlogin" element={<InstructorLogin />} />
         <Route path="/adminsignup" element={<AdminSignup />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
-        <Route path="/:role/forgot-password" element={<ForgotPassword />} />
+        <Route path="/StudentDashboard" element={<StudentDashboard/>} />
       </Routes>
     </BrowserRouter>
   );

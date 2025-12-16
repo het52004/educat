@@ -31,10 +31,6 @@ function Signup() {
           <div className="heading">
             <h1>Sign up</h1>
           </div>
-
-          {/* message placeholder */}
-          <h4></h4>
-
           <div className="inputs">
             <input
               type="text"
