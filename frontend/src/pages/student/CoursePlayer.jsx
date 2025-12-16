@@ -1,75 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/student/CoursePlayer.css";
-
-const courseData = {
-  title: "Advanced React Patterns & Performance Optimization",
-  progress: 35,
-  instructor: {
-    name: "Sarah Jenkins",
-    role: "Senior Frontend Engineer",
-    avatar: "https://i.pravatar.cc/150?img=35",
-    students: "12,403 Students",
-    rating: "4.9/5.0",
-  },
-  sections: [
-    {
-      id: 1,
-      title: "Module 1: React Internals",
-      lessons: [
-        {
-          id: 101,
-          title: "Understanding the Virtual DOM",
-          time: "14:20",
-          type: "video",
-          completed: true,
-        },
-        {
-          id: 102,
-          title: "Reconciliation Strategy",
-          time: "08:15",
-          type: "video",
-          completed: true,
-        },
-        {
-          id: 103,
-          title: "Fiber Architecture Explained",
-          time: "22:30",
-          type: "video",
-          completed: false,
-          active: true,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Module 2: Advanced Hooks",
-      lessons: [
-        {
-          id: 201,
-          title: "useLayoutEffect vs useEffect",
-          time: "06:45",
-          type: "video",
-          completed: false,
-        },
-        {
-          id: 202,
-          title: "Custom Hooks for Data Fetching",
-          time: "19:10",
-          type: "video",
-          completed: false,
-        },
-        {
-          id: 203,
-          title: "Performance Quiz",
-          time: "10:00",
-          type: "quiz",
-          completed: false,
-        },
-      ],
-    },
-  ],
-};
+import { courseData } from "../../seed/student/courseData";
 
 const Icons = {
   Play: () => (
@@ -132,6 +64,11 @@ const Icons = {
       <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
     </svg>
   ),
+  Mute: () => (
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+    </svg>
+  ),
   Settings: () => (
     <svg
       width="20"
@@ -147,69 +84,158 @@ const Icons = {
   ),
 };
 
+const formatTime = (time) => {
+  if (!time) return "00:00";
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes < 10 ? "0" + minutes : minutes}:${
+    seconds < 10 ? "0" + seconds : seconds
+  }`;
+};
+
 export default function CoursePlayer() {
   const navigate = useNavigate();
+  const videoRef = useRef(null);
+
   const [activeTab, setActiveTab] = useState("Overview");
   const [openSections, setOpenSections] = useState({ 1: true, 2: false });
+  const [currentLesson, setCurrentLesson] = useState(
+    courseData.sections[0].lessons[0]
+  );
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const toggleSection = (id) => {
     setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const handleLessonChange = (lesson) => {
+    setCurrentLesson(lesson);
+    setIsPlaying(true);
+  };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+      if (isPlaying) videoRef.current.play();
+    }
+  };
+
+  const handleSeek = (e) => {
+    if (videoRef.current) {
+      const progressBar = e.currentTarget;
+      const rect = progressBar.getBoundingClientRect();
+      const clickPosition = e.clientX - rect.left;
+      const clickPercentage = clickPosition / rect.width;
+      const newTime = clickPercentage * videoRef.current.duration;
+
+      videoRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  };
+
+  const toggleFullScreen = () => {
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      }
+    }
+  };
+
   return (
     <div className="layout-container">
-      {/* --- Main Content Area --- */}
       <main className="main-stage">
-        {/* Header */}
         <header className="player-header">
-          <button className="back-link" onClick={() => navigate("/studentdashboard")}>
+          <button
+            className="back-link"
+            onClick={() => navigate("/studentdashboard")}
+          >
             &larr; Back to Dashboard
           </button>
           <div className="header-meta">
-            <h1>{courseData.title}</h1>
+            <h1 style={{ color: "white" }}>{courseData.title}</h1>
             <span className="badge-pro">PRO COURSE</span>
           </div>
         </header>
 
-        {/* Video Player */}
         <div className="video-container">
           <div className="video-wrapper">
-            {/* Fake Video UI */}
-            <div className="video-overlay">
-              <div className="play-btn-large">
-                <Icons.Play />
+            <video
+              ref={videoRef}
+              src={currentLesson.videoUrl}
+              className="video-element"
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
+              onEnded={() => setIsPlaying(false)}
+              onClick={togglePlay}
+            />
+
+            {!isPlaying && (
+              <div className="video-overlay" onClick={togglePlay}>
+                <div className="play-btn-large">
+                  <Icons.Play />
+                </div>
               </div>
-            </div>
-            {/* Fake Controls Bar */}
+            )}
+
             <div className="video-controls">
-              <div className="progress-bar-bg">
+              <div className="progress-bar-bg" onClick={handleSeek}>
                 <div
                   className="progress-bar-fill"
-                  style={{ width: "35%" }}
+                  style={{ width: `${(currentTime / duration) * 100}%` }}
                 ></div>
               </div>
+
               <div className="controls-row">
                 <div className="left-controls">
-                  <button>
-                    <Icons.Play />
+                  <button onClick={togglePlay}>
+                    {isPlaying ? <Icons.Pause /> : <Icons.Play />}
                   </button>
-                  <button>
-                    <Icons.Volume />
+                  <button onClick={toggleMute}>
+                    {isMuted ? <Icons.Mute /> : <Icons.Volume />}
                   </button>
-                  <span className="time-display">04:20 / 14:20</span>
+                  <span className="time-display">
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </span>
                 </div>
                 <div className="right-controls">
                   <button>
                     <Icons.Settings />
                   </button>
-                  <button>FS</button>
+                  <button onClick={toggleFullScreen}>FS</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Navigation Tabs */}
         <div className="tabs-container">
           <div className="tabs-list">
             {["Overview", "Resources", "Q&A", "Reviews"].map((tab) => (
@@ -223,17 +249,15 @@ export default function CoursePlayer() {
             ))}
           </div>
 
-          {/* Tab Content */}
           <div className="tab-content">
             {activeTab === "Overview" && (
               <div className="overview-content">
                 <div className="content-left">
-                  <h2>About this lesson</h2>
+                  <h2>{currentLesson.title}</h2>
                   <p>
                     In this deep dive, we explore the internal architecture of
                     React's Fiber reconciliation algorithm. You will learn why
-                    React is fast, how the Virtual DOM diffing works, and how to
-                    optimize your components to prevent unnecessary re-renders.
+                    React is fast, how the Virtual DOM diffing works.
                   </p>
 
                   <h3>Key Topics</h3>
@@ -283,20 +307,9 @@ export default function CoursePlayer() {
                   </div>
                   <button className="btn-download">Download</button>
                 </div>
-                <div className="resource-item">
-                  <div className="icon-box">
-                    <Icons.File />
-                  </div>
-                  <div className="res-info">
-                    <h4>Fiber Architecture PDF Slides</h4>
-                    <span>PDF File • 5.1 MB</span>
-                  </div>
-                  <button className="btn-download">Download</button>
-                </div>
               </div>
             )}
 
-            {/* Add placeholders for other tabs if needed */}
             {(activeTab === "Q&A" || activeTab === "Reviews") && (
               <div className="empty-state">
                 Content coming soon for this demo.
@@ -306,7 +319,6 @@ export default function CoursePlayer() {
         </div>
       </main>
 
-      {/* --- Sidebar Playlist --- */}
       <aside className="playlist-sidebar">
         <div className="sidebar-header">
           <h3>Course Content</h3>
@@ -337,9 +349,10 @@ export default function CoursePlayer() {
                   {section.lessons.map((lesson) => (
                     <div
                       key={lesson.id}
-                      className={`lesson-row ${lesson.active ? "active" : ""} ${
-                        lesson.completed ? "completed" : ""
-                      }`}
+                      onClick={() => handleLessonChange(lesson)}
+                      className={`lesson-row ${
+                        currentLesson.id === lesson.id ? "active" : ""
+                      } ${lesson.completed ? "completed" : ""}`}
                     >
                       <div className="status-icon">
                         {lesson.completed ? (
