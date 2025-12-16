@@ -6,12 +6,8 @@ import InstructorLogin from "./pages/instructor/Login";
 import InstructorSignup from "./pages/instructor/Signup";
 import AdminLogin from "./pages/admin/Login";
 import AdminSignup from "./pages/admin/Signup";
-<<<<<<< HEAD
-import StudentDashboard from "./pages/student/Dashboard";
-=======
 import ForgotPassword from "./pages/ForgotPassword";
 import ContactUs from "./pages/ContactUs";   
->>>>>>> bfd75fc044ee437a9427793f4965337f65db39b8
 
 function App() {
   return (
@@ -24,12 +20,8 @@ function App() {
         <Route path="/instructorlogin" element={<InstructorLogin />} />
         <Route path="/adminsignup" element={<AdminSignup />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
-<<<<<<< HEAD
-        <Route path="/StudentDashboard" element={<StudentDashboard/>} />
-=======
         <Route path="/:role/forgot-password" element={<ForgotPassword />} />
         <Route path="/contact" element={<ContactUs />} />
->>>>>>> bfd75fc044ee437a9427793f4965337f65db39b8
       </Routes>
     </BrowserRouter>
   );
