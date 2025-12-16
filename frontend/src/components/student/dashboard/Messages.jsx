@@ -1,4 +1,4 @@
-import "../../styles/student/Dashboard.css";
+import "../../../styles/student/Dashboard.css";
 
 const messages = [
   {

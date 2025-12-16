@@ -1,0 +1,74 @@
+.course-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.course-header {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 30px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.header-content h1 { font-size: 32px; margin-bottom: 10px; }
+.subtitle { font-size: 18px; margin-bottom: 15px; }
+.meta-info { display: flex; gap: 15px; font-size: 14px; color: #ccc; }
+.rating { color: #f59e0b; font-weight: bold; }
+
+.details-layout {
+  display: flex;
+  gap: 40px;
+  position: relative;
+}
+
+.left-column { flex: 2; }
+.right-column { flex: 1; }
+
+.learning-section {
+  border: 1px solid #d1d7dc;
+  padding: 24px;
+  margin-bottom: 30px;
+  background: white;
+}
+
+.learn-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.learn-list li { font-size: 14px; color: #333; }
+
+.buy-card {
+  background: white;
+  border: 1px solid #d1d7dc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 20px; 
+}
+
+.buy-card-img { width: 100%; height: 200px; object-fit: cover; }
+.buy-card-body { padding: 24px; }
+.price-tag { font-size: 32px; font-weight: 700; margin-bottom: 20px; }
+.buy-card .btn-primary { margin-bottom: 10px; font-weight: bold; font-size: 16px; }
+.buy-card .btn-outline { margin-bottom: 15px; }
+.guarantee { font-size: 12px; text-align: center; color: #666; margin-bottom: 20px; }
+.course-includes ul { list-style: none; font-size: 14px; color: #333; }
+.course-includes li { margin-bottom: 8px; }
+
+@media (max-width: 768px) {
+  .details-layout { flex-direction: column; }
+  .buy-card { position: static; }
+}

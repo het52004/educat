@@ -1,4 +1,5 @@
-import "../../styles/student/Dashboard.css";
+import { useNavigate } from "react-router-dom";
+import "../../../styles/student/Dashboard.css";
 
 const enrolledCourses = [
   {
@@ -25,6 +26,8 @@ const enrolledCourses = [
 ];
 
 function Home() {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="welcome-banner">
@@ -60,7 +63,13 @@ function Home() {
                 </div>
                 <span className="progress-text">{course.progress}%</span>
               </div>
-              <button className="btn-primary">Resume</button>
+
+              <button
+                className="btn-primary"
+                onClick={() => navigate(`/learn/${course.id}`)}
+              >
+                Resume
+              </button>
             </div>
           </div>
         ))}

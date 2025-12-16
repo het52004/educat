@@ -1,35 +1,15 @@
-import "../../styles/student/Dashboard.css";
-
-const newCourses = [
-  {
-    id: 4,
-    title: "3D Modeling with Blender",
-    price: "$24.99",
-    rating: 4.8,
-    image: "https://placehold.co/300x180/FFA726/white?text=3D+Art",
-  },
-  {
-    id: 5,
-    title: "Python for Finance",
-    price: "$18.99",
-    rating: 4.7,
-    image: "https://placehold.co/300x180/42A5F5/white?text=Finance",
-  },
-  {
-    id: 6,
-    title: "Photography Essentials",
-    price: "$12.99",
-    rating: 4.9,
-    image: "https://placehold.co/300x180/AB47BC/white?text=Photo",
-  },
-];
+import { useNavigate } from "react-router-dom";
+import "../../../styles/student/Dashboard.css";
+import { courses } from "../../../seed/student/courses";
 
 function BrowseNewCourses() {
+  const navigate = useNavigate(); 
+
   return (
     <>
       <h2 className="section-title">Browse New Courses</h2>
       <div className="card-grid">
-        {newCourses.map((course) => (
+        {courses.map((course) => (
           <div key={course.id} className="course-card">
             <div
               className="card-image"
@@ -41,7 +21,14 @@ function BrowseNewCourses() {
               <h3>{course.title}</h3>
               <div className="price-row">
                 <span className="price">{course.price}</span>
-                <button className="btn-outline">Add to Cart</button>
+                
+                <button 
+                  className="btn-outline"
+                  onClick={() => navigate(`/course/${course.id}`)}
+                >
+                  View Details
+                </button>
+                
               </div>
             </div>
           </div>

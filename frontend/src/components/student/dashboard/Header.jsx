@@ -1,6 +1,6 @@
-import useDashboardStore from '../../store/student/useDashboardStore';
-import '../../styles/student/Dashboard.css';
-import { Icon } from "../../components/student/Icons";
+import useDashboardStore from '../../../store/student/useDashboardStore';
+import '../../../styles/student/Dashboard.css';
+import { Icon } from "./Icons";
 
 function Header() {
   const { toggleSidebar } = useDashboardStore();

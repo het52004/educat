@@ -6,8 +6,10 @@ import InstructorLogin from "./pages/instructor/Login";
 import InstructorSignup from "./pages/instructor/Signup";
 import AdminLogin from "./pages/admin/Login";
 import AdminSignup from "./pages/admin/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
-import ContactUs from "./pages/ContactUs";   
+import ContactUs from "./pages/ContactUs";
+import Dashboard from "./pages/student/Dashboard";
+import CourseDetails from "./pages/student/CourseDetails";
+import CoursePlayer from "./pages/student/CoursePlayer";
 
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
         <Route path="/instructorlogin" element={<InstructorLogin />} />
         <Route path="/adminsignup" element={<AdminSignup />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
-        <Route path="/:role/forgot-password" element={<ForgotPassword />} />
+        <Route path="/studentdashboard" element={<Dashboard />} />
+        <Route path="/course/:id" element={<CourseDetails />} />
+        <Route path="/learn/:id" element={<CoursePlayer />} />
         <Route path="/contact" element={<ContactUs />} />
       </Routes>
     </BrowserRouter>

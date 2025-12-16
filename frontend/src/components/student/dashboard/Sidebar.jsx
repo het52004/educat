@@ -1,6 +1,6 @@
-import { Icon } from '../../components/student/Icons';
-import '../../styles/student/Dashboard.css';
-import useDashboardStore from '../../store/student/useDashboardStore';
+import { Icon } from './Icons';
+import '../../../styles/student/Dashboard.css';
+import useDashboardStore from '../../../store/student/useDashboardStore';
 
 function Sidebar() {
   const { activeTab, setActiveTab, isSidebarOpen, closeSidebar } = useDashboardStore();
