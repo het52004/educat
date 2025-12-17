@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
-import "../../styles/student/CourseDetails.css";
-import { courses } from "../../seed/student/courses";
+import "../../../styles/student/courseDetails.css";
+import { courses } from "../../../seed/student/courses";
 
 export default function CourseDetails() {
   const { id } = useParams();
@@ -9,7 +9,18 @@ export default function CourseDetails() {
   const course = courses.find((c) => c.id === parseInt(id));
 
   if (!course) {
-    return <h2>Course not found!</h2>;
+    return (
+      <div style={{ padding: "40px", textAlign: "center", color: "white" }}>
+        <h2>Course not found!</h2>
+        <button
+          onClick={() => navigate(-1)}
+          className="back-btn"
+          style={{ marginTop: "20px" }}
+        >
+          ← Go Back
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -24,7 +35,7 @@ export default function CourseDetails() {
           <p className="subtitle">{course.description}</p>
           <div className="meta-info">
             <span className="rating">★ {course.rating}</span>
-            <span>Created by {course.instructor}</span>
+            <span>Created by {course.instructor.name}</span>
           </div>
         </div>
       </div>

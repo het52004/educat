@@ -7,9 +7,9 @@ import InstructorSignup from "./pages/instructor/Signup";
 import AdminLogin from "./pages/admin/Login";
 import AdminSignup from "./pages/admin/Signup";
 import ContactUs from "./pages/ContactUs";
-import Dashboard from "./pages/student/Dashboard";
-import CourseDetails from "./pages/student/CourseDetails";
-import CoursePlayer from "./pages/student/CoursePlayer";
+import Dashboard from "./pages/student/dashboard/Dashboard";
+import CoursePlayer from "./pages/student/resume-course/CoursePlayer";
+import CourseDetails from "./pages/student/dashboard/CourseDetails";
 
 function App() {
   return (

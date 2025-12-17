@@ -1,11 +1,11 @@
-import "../../styles/student/Dashboard.css";
+import "../../../styles/student/Dashboard.css";
 
-import useDashboardStore from "../../store/student/useDashboardStore";
-import Sidebar from "../../components/student/dashboard/Sidebar";
-import Home from "../../components/student/dashboard/Home";
-import BrowseNewCourses from "../../components/student/dashboard/BrowseNewCourses";
-import Messages from "../../components/student/dashboard/Messages";
-import Header from "../../components/student/dashboard/Header";
+import useDashboardStore from "../../../store/student/useDashboardStore";
+import Sidebar from "../../../components/student/dashboard/Sidebar";
+import Home from "../../../components/student/dashboard/Home";
+import BrowseNewCourses from "../../../components/student/dashboard/BrowseNewCourses";
+import Messages from "../../../components/student/dashboard/Messages";
+import Header from "../../../components/student/dashboard/Header";
 
 export default function Dashboard() {
   const { activeTab, isSidebarOpen, closeSidebar } = useDashboardStore();
