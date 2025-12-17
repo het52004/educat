@@ -31,7 +31,6 @@ export default function CoursePlayer() {
   const [activeTab, setActiveTab] = useState("Overview");
   const [openSections, setOpenSections] = useState({ 1: true });
 
-  // 3. Initialize currentLesson safely
   const [currentLesson, setCurrentLesson] = useState(
     course.sections &&
       course.sections.length > 0 &&
