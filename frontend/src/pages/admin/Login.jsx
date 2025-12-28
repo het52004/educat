@@ -55,11 +55,6 @@ function Login() {
           <div className="button">
             <input type="submit" className="btn" value="Sign In" />
           </div>
-
-          <div className="signup">
-            Don't have an account?
-            <Link to="/adminsignup">&nbsp;Sign Up</Link>
-          </div>
         </div>
       </form>
     </div>

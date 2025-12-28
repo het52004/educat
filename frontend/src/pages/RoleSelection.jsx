@@ -9,7 +9,7 @@ const RoleSelection = () => {
         navigate("/studentsignup");
         break;
       case "admin":
-        navigate("/adminsignup");
+        navigate("/adminlogin");
         break;
       case "instructor":
         navigate("/instructorsignup");
