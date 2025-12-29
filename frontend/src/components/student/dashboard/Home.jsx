@@ -4,24 +4,11 @@ import "../../../styles/student/Dashboard.css";
 const enrolledCourses = [
   {
     id: 1,
-    title: "UI/UX Design Masterclass",
+    title: "React for Beginners",
     progress: 75,
-    category: "Design",
-    image: "https://placehold.co/300x180/5C6BC0/white?text=UI+UX",
-  },
-  {
-    id: 2,
-    title: "Full Stack Web Dev",
-    progress: 45,
-    category: "Development",
-    image: "https://placehold.co/300x180/26A69A/white?text=Web+Dev",
-  },
-  {
-    id: 3,
-    title: "Digital Marketing 101",
-    progress: 10,
-    category: "Marketing",
-    image: "https://placehold.co/300x180/EF5350/white?text=Marketing",
+    category: "Frontend",
+    image: "https://placehold.co/300x180/20232A/61DAFB?text=React",
+
   },
 ];
 

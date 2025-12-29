@@ -35,7 +35,7 @@ export default function CourseDetails() {
           <p className="subtitle">{course.description}</p>
           <div className="meta-info">
             <span className="rating">★ {course.rating}</span>
-            <span>Created by {course.instructor.name}</span>
+            <span>Created by {course.instructor}</span>
           </div>
         </div>
       </div>
