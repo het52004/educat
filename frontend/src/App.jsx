@@ -5,7 +5,6 @@ import StudentSignup from "./pages/student/Signup";
 import InstructorLogin from "./pages/instructor/Login";
 import InstructorSignup from "./pages/instructor/Signup";
 import AdminLogin from "./pages/admin/Login";
-import AdminSignup from "./pages/admin/Signup";
 import Dashboard from "./pages/student/dashboard/Dashboard";
 import CoursePlayer from "./pages/student/resume-course/CoursePlayer";
 import CourseDetails from "./pages/student/dashboard/CourseDetails";
@@ -33,7 +32,6 @@ function App() {
         <Route path="/instructordashboard" element={<InstructorDashboard />} />
 
         {/* Admin Routes */}
-        <Route path="/adminsignup" element={<AdminSignup />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
       </Routes>
     </BrowserRouter>
