@@ -1,0 +1,138 @@
+/* ========== RESET ========== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+
+/* ========== HEADER ========== */
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.logo {
+  width: 140px;
+}
+
+/* ========== MAIN CONTAINER ========== */
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.contact_cont {
+  width: 100%;
+  max-width: 1100px;
+  background: rgba(223, 223, 223, 0.56);
+  border-radius: 25px;
+  padding: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+/* ========== LEFT IMAGE ========== */
+.leftcon {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.leftcon img {
+  max-width: 300px;
+  width: 100%;
+}
+
+/* ========== RIGHT FORM ========== */
+.rightcon {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.contact_form {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact_form h2 {
+  margin-bottom: 20px;
+}
+
+/* ========== INPUTS ========== */
+.inputcon {
+  width: 100%;
+  padding: 12px 18px;
+  margin-bottom: 12px;
+  border-radius: 25px;
+  border: 2px solid #8a8a8a;
+  font-size: 14px;
+}
+
+.inputcon:focus {
+  outline: none;
+  border-color: #0fa2e6;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+/* ========== BUTTON ========== */
+.btncon {
+  width: 200px;
+  padding: 12px;
+  border-radius: 25px;
+  border: 2px solid #14213d;
+  background-color: #14213d;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btncon:hover {
+  background-color: #ffffff;
+  color: #14213d;
+}
+
+.btncon:active {
+  background-color: #0f1a2f;
+  color: #ffffff;
+}
+
+
+/* ========== ERROR ========== */
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .contact_cont {
+    flex-direction: column;
+  }
+
+  .leftcon img {
+    max-width: 220px;
+  }
+
+  .contact_form {
+    max-width: 300px;
+  }
+}

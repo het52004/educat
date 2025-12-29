@@ -20,6 +20,9 @@ function App() {
         {/* Student Routes */}
         <Route path="/studentsignup" element={<StudentSignup />} />
         <Route path="/studentlogin" element={<StudentLogin />} />
+        <Route path="/instructorsignup" element={<InstructorSignup />} />
+        <Route path="/instructorlogin" element={<InstructorLogin />} />
+        <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/studentdashboard" element={<Dashboard />} />
         <Route path="/course/:id" element={<CourseDetails />} />
         <Route path="/learn/:id" element={<CoursePlayer />} />

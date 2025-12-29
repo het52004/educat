@@ -8,12 +8,8 @@ function Signup() {
   const confirmPasswordRef = useRef(null);
 
   const checkPasswordMatch = () => {
-    if (
-      passwordRef.current.value !== confirmPasswordRef.current.value
-    ) {
-      confirmPasswordRef.current.setCustomValidity(
-        "Passwords do not match"
-      );
+    if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+      confirmPasswordRef.current.setCustomValidity("Passwords do not match");
     } else {
       confirmPasswordRef.current.setCustomValidity("");
     }
@@ -21,15 +17,10 @@ function Signup() {
 
   return (
     <div className="container">
-      <form
-        action="includes/scripts/signmeup.php"
-        method="post"
-        className="login"
-        id="signupform"
-      >
+      <form className="login" id="signupform">
         <div className="main">
           <div className="heading">
-            <h1>Sign up</h1>
+            <h1>Instructor Sign Up</h1>
           </div>
 
           {/* message placeholder */}
@@ -52,11 +43,40 @@ function Signup() {
               name="educat_user_email"
               className="input"
               placeholder="Email"
-              id="emailID"
               required
             />
 
-            <span id="emailError" className="error"></span>
+            {/* Area of Expertise */}
+            <div className="expertise-container">
+              <label className="expertise-label">Area of Expertise</label>
+
+              <div className="expertise-options">
+                {[
+                  "Web Development",
+                  "Data Science",
+                  "AI / ML",
+                  "UI / UX",
+                  "Prompt Engineering",
+                  "Other",
+                ].map((skill) => (
+                  <label key={skill} className="expertise-item">
+                    <input type="checkbox" name="expertise" value={skill} />
+                    {skill}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+
+            {/* Short Bio */}
+            <textarea
+              name="educat_bio"
+              className="input bio-textarea"
+              placeholder="Short Bio (max 150 characters)"
+              maxLength="150"
+              rows="3"
+              required
+            ></textarea>
 
             <input
               type="password"
@@ -65,7 +85,6 @@ function Signup() {
               placeholder="Password"
               pattern=".{8,}"
               title="Password must be at least 8 characters long"
-              id="password"
               ref={passwordRef}
               required
             />
@@ -77,7 +96,6 @@ function Signup() {
               placeholder="Confirm password"
               pattern=".{8,}"
               title="Password must be at least 8 characters long"
-              id="confirm-password"
               ref={confirmPasswordRef}
               onInput={checkPasswordMatch}
               required
