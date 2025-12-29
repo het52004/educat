@@ -9,14 +9,7 @@
   }
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  font-family: "Poppins", sans-serif;
-}
-
-.container {
+.auth-container {
   width: 95%;
   height: 90%;
   border-radius: 25px;
@@ -27,16 +20,16 @@ body {
   margin: auto;
 }
 
-.leftimg {
+.auth-container .leftimg {
   animation: fadeIn 1s ease;
 }
 
-.leftimg img {
+.auth-container .leftimg img {
   max-width: 100%;
   height: auto;
 }
 
-.login {
+.auth-container .login {
   width: 30%;
   height: 100%;
   animation: fadeIn 0.8s ease;
@@ -45,64 +38,56 @@ body {
   justify-content: center;
 }
 
-.main {
+.auth-container .main {
   border-radius: 15px;
   padding: 30px 0;
 }
 
-h1 {
-  text-align: center;
-  color: #14213d;
-}
-
-.inputs {
+.auth-container .inputs {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.input {
+.auth-container .input {
   padding: 10px;
   border: 1px solid gray;
   border-radius: 10px;
   margin-top: 20px;
   width: 70%;
   transition: 0.3s ease;
-  font-family: "Poppins", sans-serif;
 }
 
-.input:focus {
+.auth-container .input:focus {
   box-shadow: 0px 0px 10px 2px rgb(199, 199, 199);
   border-color: #fca311;
   outline: none;
   width: 80%;
 }
 
-/* -------- Expertise Multi Select Dropdown -------- */
-
-.expertise-select {
+.auth-container .expertise-select {
   height: 120px;
   cursor: pointer;
 }
 
-.expertise-select option {
+.auth-container .expertise-select option {
   padding: 6px;
 }
 
-.expertise-container {
+.auth-container .expertise-container {
   width: 70%;
   margin-top: 20px;
   font-family: "Poppins", sans-serif;
 }
 
-.expertise-label {
+.auth-container .expertise-label {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
   color: #14213d;
 }
 
-.expertise-options {
+.auth-container .expertise-options {
   border: 1px solid gray;
   border-radius: 10px;
   padding: 10px;
@@ -111,7 +96,7 @@ h1 {
   overflow-y: auto;
 }
 
-.expertise-item {
+.auth-container .expertise-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -120,49 +105,33 @@ h1 {
   font-size: 14px;
 }
 
-.expertise-item input {
+.auth-container .expertise-item input {
   accent-color: #14213d;
   cursor: pointer;
 }
 
-/* Hover effect */
-.expertise-item:hover {
+.auth-container .expertise-item:hover {
   color: #fca311;
 }
-/* -------- Bio Textarea -------- */
 
-.bio-textarea {
+.auth-container .bio-textarea {
   resize: none;
 }
 
-/* -------- Links -------- */
-
-.link {
+.auth-container .link {
   margin-top: 10px;
   display: flex;
   justify-content: center;
 }
 
-a {
-  text-decoration: none;
-  color: #fca311;
-  transition: 0.3s ease;
-}
-
-a:hover {
-  color: #14213d;
-}
-
-/* -------- Button -------- */
-
-.button {
+.auth-container .button {
   width: 100%;
   display: flex;
   justify-content: center;
   margin-top: 30px;
 }
 
-.btn {
+.auth-container .btn {
   padding: 12px 30px;
   border-radius: 15px;
   border: 1px solid gray;
@@ -175,74 +144,70 @@ a:hover {
   width: 105px;
 }
 
-.btn:hover {
+.auth-container .btn:hover {
   color: #14213d;
   background-color: white;
   width: 130px;
 }
 
-.btn:active {
+.auth-container .btn:active {
   width: 108px;
 }
 
-.signup {
+.auth-container .signup {
   display: flex;
   justify-content: center;
   margin-top: 40px;
   font-size: 18px;
 }
 
-/* -------------------- RESPONSIVE -------------------- */
-
-/* Tablet */
 @media (max-width: 992px) {
-  .container {
+  .auth-container {
     flex-direction: column;
     height: auto;
     padding: 30px 0;
   }
 
-  .login {
+  .auth-container .login {
     width: 60%;
   }
 
-  .leftimg {
+  .auth-container .leftimg {
     margin-bottom: 20px;
   }
 
-  .expertise-select {
+  .auth-container .expertise-select {
     height: 110px;
   }
 }
 
-/* Mobile */
 @media (max-width: 576px) {
-  .login {
+  .auth-container .login {
     width: 90%;
   }
 
-  .input {
+  .auth-container .input {
     width: 85%;
   }
 
-  .input:focus {
+  .auth-container .input:focus {
     width: 90%;
   }
 
-  .expertise-select {
+  .auth-container .expertise-select {
     height: 100px;
   }
 
-  .signup {
+  .auth-container .signup {
     font-size: 16px;
     text-align: center;
   }
 
-  h1 {
+  .auth-container h1 {
     font-size: 24px;
   }
 
-  .expertise-container {
+  .auth-container .expertise-container {
     width: 85%;
   }
 }
