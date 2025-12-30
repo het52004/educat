@@ -30,7 +30,6 @@ export default function ContactUs() {
 
   return (
     <>
-      {/* ================= HEADER ================= */}
       <header className="header">
         <img
           src="/assets/images/EduCat (3).png"
@@ -39,7 +38,6 @@ export default function ContactUs() {
         />
       </header>
 
-      {/* ================= MAIN ================= */}
       <div className="container">
         <div className="contact_cont">
           <div className="leftcon">

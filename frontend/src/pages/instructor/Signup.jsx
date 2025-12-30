@@ -23,7 +23,6 @@ function Signup() {
             <h1>Instructor Sign Up</h1>
           </div>
 
-          {/* message placeholder */}
           <h4></h4>
 
           <div className="inputs">
@@ -46,7 +45,6 @@ function Signup() {
               required
             />
 
-            {/* Area of Expertise */}
             <div className="expertise-container">
               <label className="expertise-label">Area of Expertise</label>
 
@@ -68,7 +66,6 @@ function Signup() {
             </div>
 
 
-            {/* Short Bio */}
             <textarea
               name="educat_bio"
               className="input bio-textarea"

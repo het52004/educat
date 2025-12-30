@@ -1,4 +1,3 @@
-/* --- Global Styles --- */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 * {
@@ -9,9 +8,9 @@
 }
 
 :root {
-  --primary: #4f46e5; /* Deep Modern Blue */
+  --primary: #4f46e5;
   --primary-light: #eef2ff;
-  --accent: #f59e0b; /* Warning/Action Orange */
+  --accent: #f59e0b;
   --text-dark: #1f2937;
   --text-gray: #6b7280;
   --bg-light: #f3f4f6;
@@ -32,7 +31,6 @@ body {
   overflow: hidden;
 }
 
-/* --- Sidebar --- */
 .sidebar {
   background: var(--white);
   border-right: 1px solid #e5e7eb;
@@ -50,21 +48,22 @@ body {
   gap: 5px;
   margin-top: -5%;
 }
-.logo-symbol{
+
+.logo-symbol {
   width: 30%;
 }
 
-.logo-name{
-  width:70%
+.logo-name {
+  width: 70%;
 }
 
-.logo-symbol img{
+.logo-symbol img {
   width: 50px;
   border-color: #111827;
   border-radius: 20%;
 }
 
-.logo-name img{
+.logo-name img {
   width: 100px;
 }
 
@@ -126,7 +125,6 @@ body {
   width: 100%;
 }
 
-/* --- Main Content --- */
 .main-content {
   flex: 1;
   display: flex;
@@ -134,10 +132,9 @@ body {
   overflow: hidden;
 }
 
-/* Header */
 .top-bar {
   height: 80px;
-  background: var(--white); /* Can be transparent too */
+  background: var(--white);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -195,7 +192,6 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Content Area */
 .content-area {
   flex: 1;
   overflow-y: auto;
@@ -209,7 +205,6 @@ body {
   color: var(--text-dark);
 }
 
-/* Welcome Banner */
 .welcome-banner {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border-radius: 20px;
@@ -239,7 +234,6 @@ body {
   margin-right: 20px;
 }
 
-/* Cards */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -365,7 +359,6 @@ body {
   background: var(--primary-light);
 }
 
-/* Messages */
 .messages-panel {
   background: var(--white);
   border-radius: 16px;
@@ -424,7 +417,6 @@ body {
   color: #9ca3af;
 }
 
-/* --- Mobile Responsiveness --- */
 @media (max-width: 900px) {
   .sidebar {
     position: fixed;
@@ -442,7 +434,7 @@ body {
   }
 
   .search-bar {
-    display: none; /* Hide search on mobile for simplicity */
+    display: none;
   }
 
   .welcome-banner {

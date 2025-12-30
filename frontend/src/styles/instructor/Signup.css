@@ -3,6 +3,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -78,7 +79,6 @@ h1 {
   width: 80%;
 }
 
-/* -------- Expertise Multi Select Dropdown -------- */
 
 .expertise-select {
   height: 120px;
@@ -125,17 +125,14 @@ h1 {
   cursor: pointer;
 }
 
-/* Hover effect */
 .expertise-item:hover {
   color: #fca311;
 }
-/* -------- Bio Textarea -------- */
 
 .bio-textarea {
   resize: none;
 }
 
-/* -------- Links -------- */
 
 .link {
   margin-top: 10px;
@@ -153,7 +150,6 @@ a:hover {
   color: #14213d;
 }
 
-/* -------- Button -------- */
 
 .button {
   width: 100%;
@@ -192,9 +188,7 @@ a:hover {
   font-size: 18px;
 }
 
-/* -------------------- RESPONSIVE -------------------- */
 
-/* Tablet */
 @media (max-width: 992px) {
   .container {
     flex-direction: column;
@@ -215,7 +209,6 @@ a:hover {
   }
 }
 
-/* Mobile */
 @media (max-width: 576px) {
   .login {
     width: 90%;

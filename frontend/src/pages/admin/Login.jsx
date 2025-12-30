@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin/Login.css";
 
-// ✅ correct relative path to assets folder
 import studyImg from "../../../assets/images/study.png";
 
 function Login() {
-  const navigate = useNavigate(); // kept, no functionality removed
+  const navigate = useNavigate();
 
   return (
     <div className="container">

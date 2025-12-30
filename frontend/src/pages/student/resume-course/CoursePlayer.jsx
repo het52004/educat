@@ -41,7 +41,6 @@ export default function CoursePlayer() {
 
           <div className="header-meta">
             <h1>{course.title}</h1>
-            {/* <span className="badge-pro">PRO COURSE</span> */}
           </div>
         </header>
 

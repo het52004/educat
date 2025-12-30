@@ -130,9 +130,6 @@ a:hover {
   font-size: 18px;
 }
 
-/* -------------------- RESPONSIVE -------------------- */
-
-/* Tablet */
 @media (max-width: 992px) {
   .container {
     flex-direction: column;
@@ -149,7 +146,6 @@ a:hover {
   }
 }
 
-/* Mobile */
 @media (max-width: 576px) {
   .login {
     width: 90%;

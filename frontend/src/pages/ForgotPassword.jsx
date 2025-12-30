@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import "../styles/admin/login.css"; // reused login.css
+import "../styles/admin/login.css";
 
 export default function ForgotPassword() {
   const { role } = useParams();
