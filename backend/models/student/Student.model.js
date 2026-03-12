@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const studentSchema = new mongoose.Schema({
-    name: {
+    fullName: {
         type: String,
         required: true
     },
@@ -18,7 +18,7 @@ const studentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
     }],
     contactNumber: {
-        type: Number,
+        type: String,
         required: true
     },
 }, { timestamps: true });

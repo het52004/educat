@@ -17,7 +17,7 @@ export const sendEmailToUser = async (to, otp) => {
         text: `This OTP will expire in 5 minutes! do not share this OTP with anyone!\nOTP:${otp}`,
     };
     try {
-        const info = await transporter.sendMail(mailOptions);
+        const info = await transporter.sendMail(mailOptions);        
         return { success: true };
     } catch (error) {
         return { success: false, message: error.message };

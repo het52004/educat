@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const TempStudentSchema = new mongoose.Schema(
   {
-    name: {
+    fullName: {
       type: String,
       required: true,
     },
@@ -14,6 +14,11 @@ const TempStudentSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    contact: {
+      type: String,
+      required: true,
+      unique: true,
     },
     otp:{
         type: String,

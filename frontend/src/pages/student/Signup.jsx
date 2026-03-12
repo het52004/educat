@@ -1,29 +1,12 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/student/Signup.css";
 import studyImg from "../../../assets/images/study.png";
 
 function Signup() {
-  const passwordRef = useRef(null);
-  const confirmPasswordRef = useRef(null);
-
-  const checkPasswordMatch = () => {
-    if (
-      passwordRef.current.value !== confirmPasswordRef.current.value
-    ) {
-      confirmPasswordRef.current.setCustomValidity(
-        "Passwords do not match"
-      );
-    } else {
-      confirmPasswordRef.current.setCustomValidity("");
-    }
-  };
 
   return (
     <div className="container">
       <form
-        action="includes/scripts/signmeup.php"
-        method="post"
         className="login"
         id="signupform"
       >
@@ -62,20 +45,14 @@ function Signup() {
               pattern=".{8,}"
               title="Password must be at least 8 characters long"
               id="password"
-              ref={passwordRef}
               required
             />
 
             <input
-              type="password"
+              type="text"
               name="educat_user_confirm_password"
               className="input"
-              placeholder="Confirm password"
-              pattern=".{8,}"
-              title="Password must be at least 8 characters long"
-              id="confirm-password"
-              ref={confirmPasswordRef}
-              onInput={checkPasswordMatch}
+              placeholder="Contact"
               required
             />
           </div>
