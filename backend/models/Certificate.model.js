@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const certificateSchema = new mongoose.Schema({
     course: {
         type: mongoose.Schema.Types.ObjectId,
