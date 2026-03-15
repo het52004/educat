@@ -111,6 +111,29 @@ export const signup = async (req, res) => {
   }
 };
 
+export const checkAuth = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.json({ success: false, message: "Login again!" });
+    } else {
+      const studentData = await Student.findOne({ email });
+      if (!studentData) {
+        return res.json({
+          success: false,
+          message: "Student data not found! please login again!",
+        });
+      } else {
+        return res.json({
+          success: true,
+          message: "Data successfully fetched!",
+          studentData,
+        });
+      }
+    }
+  } catch (error) {}
+};
+
 export const studentLogout = (req, res) => {
   res.send("Logout endpoint");
 };

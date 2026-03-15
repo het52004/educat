@@ -9,6 +9,7 @@ import Dashboard from "./pages/student/dashboard/Dashboard";
 import CoursePlayer from "./pages/student/resume-course/CoursePlayer";
 import CourseDetails from "./pages/student/dashboard/CourseDetails";
 import InstructorDashboard from "./pages/instructor/dashboard/InstructorDashboard";
+import EnterOtp from "./pages/student/EnterOtp";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         {/* Student Routes */}
         <Route path="/studentsignup" element={<StudentSignup />} />
         <Route path="/studentlogin" element={<StudentLogin />} />
+        <Route path="/enterotp" element={<EnterOtp />} />
         <Route path="/instructorsignup" element={<InstructorSignup />} />
         <Route path="/instructorlogin" element={<InstructorLogin />} />
         <Route path="/adminlogin" element={<AdminLogin />} />

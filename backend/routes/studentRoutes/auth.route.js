@@ -4,6 +4,7 @@ import {
   studentLogout,
   requestStudentOtp,
   signup,
+  checkAuth,
 } from "../../controllers/studentControllers/auth.controller.js";
 
 const app = express();
@@ -11,6 +12,7 @@ const app = express();
 app.post("/studentLogin", studentLogin);
 app.post("/signup", signup);
 app.post("/requestStudentOtp", requestStudentOtp);
+app.post("/checkAuth", checkAuth);
 app.get("/studentLogout", studentLogout);
 
 export default app;
