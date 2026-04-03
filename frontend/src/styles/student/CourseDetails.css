@@ -65,7 +65,26 @@
 .buy-card-img { width: 100%; height: 200px; object-fit: cover; }
 .buy-card-body { padding: 24px; }
 .price-tag { font-size: 32px; font-weight: 700; margin-bottom: 20px; }
-.buy-card .btn-primary { margin-bottom: 10px; font-weight: bold; font-size: 16px; }
+.buy-card .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    transition: background 0.2s;
+    margin-bottom: 10px;
+}
+
+.buy-card .btn-primary:hover {
+    background: #4338ca;
+}
+
 .buy-card .btn-outline { margin-bottom: 15px; }
 .guarantee { font-size: 12px; text-align: center; color: #666; margin-bottom: 20px; }
 .course-includes ul { list-style: none; font-size: 14px; color: #333; }

@@ -1,0 +1,181 @@
+.profile-page {
+    max-width: 680px;
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    margin-bottom: 24px;
+}
+
+.profile-avatar-big {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.profile-meta h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.profile-meta p {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.profile-form-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.profile-section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+}
+
+.profile-field {
+    margin-bottom: 16px;
+}
+
+.profile-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+.profile-field input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.profile-field input:focus {
+    border-color: var(--primary);
+}
+
+.profile-disabled {
+    background: var(--bg-light);
+    color: var(--text-gray) !important;
+    cursor: not-allowed;
+}
+
+.profile-msg {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.profile-msg.success {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.profile-msg.error {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.profile-danger-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid #fee2e2;
+}
+
+.danger-label {
+    color: #dc2626 !important;
+}
+
+.danger-text {
+    font-size: 13px;
+    color: var(--text-gray);
+    margin-bottom: 16px;
+}
+
+.btn-danger {
+    padding: 9px 20px;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+    transition: background 0.2s;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+.btn-cancel {
+    padding: 9px 20px;
+    background: var(--bg-light);
+    color: var(--text-gray);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+    transition: background 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #e5e7eb;
+}
+
+.delete-confirm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.delete-confirm input {
+    padding: 10px 14px;
+    border: 1px solid #fca5a5;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+}
+
+.delete-confirm input:focus {
+    border-color: #dc2626;
+}
+
+.delete-actions {
+    display: flex;
+    gap: 10px;
+}

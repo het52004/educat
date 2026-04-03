@@ -7,6 +7,8 @@ import studentRoutes from "./routes/studentRoutes/auth.route.js";
 import adminRoutes from "./routes/adminRoutes/auth.route.js";
 import instructorRoutes from "./routes/instructorRoutes/auth.route.js";
 import courseRoutes from "./routes/courseRoutes/course.route.js";
+import messageRoutes from "./routes/messageRoutes/message.route.js";
+import lectureRoutes from "./routes/lectureRoutes/lecture.route.js";
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.use("/student", studentRoutes);
 app.use("/admin", adminRoutes);
 app.use("/instructor", instructorRoutes);
 app.use("/course", courseRoutes);
+app.use("/messages", messageRoutes);
+app.use("/lectures", lectureRoutes);
 
 app.listen(port, () => {
     console.log(`backend server running on port ${port}`);

@@ -103,4 +103,40 @@ export const useAuthStore = create((set) => ({
       return false;
     }
   },
+
+  updateProfile: async (data) => {
+    try {
+      const res = await api.put("/updateProfile", data);
+      if (res.data.success) {
+        set({ user: res.data.studentData });
+      }
+      return res.data;
+    } catch (error) {
+      return { success: false, message: "Something went wrong" };
+    }
+  },
+
+  deleteAccount: async (password) => {
+    try {
+      const res = await api.delete("/deleteAccount", { data: { password } });
+      if (res.data.success) {
+        set({ user: null });
+      }
+      return res.data;
+    } catch (error) {
+      return { success: false, message: "Something went wrong" };
+    }
+  },
+
+  enrollCourse: async (courseId) => {
+    try {
+      const res = await api.post(`/enroll/${courseId}`);
+      if (res.data.success) {
+        set({ user: res.data.studentData });
+      }
+      return res.data;
+    } catch (error) {
+      return { success: false, message: "Something went wrong" };
+    }
+  },
 }));

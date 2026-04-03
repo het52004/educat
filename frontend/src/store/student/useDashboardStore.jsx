@@ -7,6 +7,9 @@ const useDashboardStore = create((set) => ({
   isSidebarOpen: false,
   toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
   closeSidebar: () => set({ isSidebarOpen: false }),
+
+  searchQuery: '',
+  setSearchQuery: (q) => set({ searchQuery: q }),
 }));
 
 export default useDashboardStore;

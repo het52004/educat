@@ -35,10 +35,22 @@ function Sidebar() {
           <Icon name="book" /> <span>Browse Courses</span>
         </button>
         <button
+          className={activeTab === "enrolled-courses" ? "active" : ""}
+          onClick={() => handleTabClick("enrolled-courses")}
+        >
+          <Icon name="graduation" /> <span>Enrolled Courses</span>
+        </button>
+        <button
           className={activeTab === "messages" ? "active" : ""}
           onClick={() => handleTabClick("messages")}
         >
           <Icon name="message" /> <span>Messages</span>
+        </button>
+        <button
+          className={activeTab === "profile" ? "active" : ""}
+          onClick={() => handleTabClick("profile")}
+        >
+          <Icon name="user" /> <span>My Profile</span>
         </button>
       </nav>
     </aside>

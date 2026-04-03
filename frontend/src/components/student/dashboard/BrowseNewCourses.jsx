@@ -2,14 +2,25 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/student/Dashboard.css";
 import { useCourseStore } from "../../../store/student/useCourseStore";
+import useDashboardStore from "../../../store/student/useDashboardStore";
 
 function BrowseNewCourses() {
     const navigate = useNavigate();
     const { courses, loading, fetchPublishedCourses } = useCourseStore();
+    const { searchQuery } = useDashboardStore();
 
     useEffect(() => {
         fetchPublishedCourses();
     }, []);
+
+    const filtered = searchQuery.trim()
+        ? courses.filter(
+            (c) =>
+                c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                c.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                c.addedBy?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+        : courses;
 
     if (loading) {
         return <p style={{ color: "var(--text-gray)", marginTop: "20px" }}>Loading courses...</p>;
@@ -17,15 +28,17 @@ function BrowseNewCourses() {
 
     return (
         <>
-            <h2 className="section-title">Browse New Courses</h2>
+            <h2 className="section-title">
+                {searchQuery.trim() ? `Results for "${searchQuery}"` : "Browse New Courses"}
+            </h2>
 
-            {courses.length === 0 ? (
+            {filtered.length === 0 ? (
                 <p style={{ color: "var(--text-gray)", marginTop: "10px" }}>
-                    No courses available yet. Check back soon!
+                    {searchQuery.trim() ? "No courses match your search." : "No courses available yet. Check back soon!"}
                 </p>
             ) : (
                 <div className="card-grid">
-                    {courses.map((course) => (
+                    {filtered.map((course) => (
                         <div key={course._id} className="course-card">
                             <div
                                 className="card-image"
