@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
-const instructorSchmema = new mongoose.Schema(
+const instructorSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -13,8 +14,15 @@ const instructorSchmema = new mongoose.Schema(
     },
     password: {
       type: String,
-
       required: true,
+    },
+    bio: {
+      type: String,
+      default: "",
+    },
+    expertise: {
+      type: [String],
+      default: [],
     },
     courses: [
       {
@@ -26,6 +34,16 @@ const instructorSchmema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Instructor = mongoose.model("Instructor", instructorSchmema);
+instructorSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
+
+instructorSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
+
+const Instructor = mongoose.model("Instructor", instructorSchema);
 
 export default Instructor;

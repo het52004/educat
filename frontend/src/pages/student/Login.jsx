@@ -1,10 +1,31 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "../../styles/student/Login.css";
 import studyImg from "../../../assets/images/study.png";
+import { useAuthStore } from "../../store/student/useAuthStore";
 
 function Login() {
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+  const loginError = useAuthStore((state) => state.loginError);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await login(formData);
+    if (success) {
+      navigate("/studentdashboard");
+    }
+    setFormData({ email: "", password: "" });
+  };
 
   return (
     <div className="container">
@@ -12,11 +33,7 @@ function Login() {
         <img src={studyImg} alt="Study" />
       </div>
 
-      <form
-        action="includes/scripts/signmein.php"
-        method="post"
-        className="login"
-      >
+      <form className="login">
         <div className="main">
           <div className="heading">
             <h1>Sign In</h1>
@@ -24,30 +41,36 @@ function Login() {
           <div className="inputs">
             <input
               type="email"
-              name="educat_login_email"
+              name="email"
               className="input"
               placeholder="Email"
               autoFocus
+              value={formData.email}
+              onChange={handleChange}
               required
             />
 
             <input
               type="password"
-              name="educat_login_password"
+              name="password"
               className="input"
               placeholder="Password"
-              pattern=".{8,}"
-              title="Password must be at least 8 characters long"
+              value={formData.password}
+              onChange={handleChange}
               required
             />
           </div>
 
           <div className="link">
-            <a href="forgot-password.php">Forgot password?</a>
+            <Link to="/forgotpassword">Forgot password?</Link>
           </div>
 
-          <div className="button">
+          <div className="button" onClick={handleSubmit}>
             <input type="submit" className="btn" value="Sign In" />
+          </div>
+
+          <div className="error" style={{ color: "red" }}>
+            {loginError}
           </div>
 
           <div className="signup">

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true,
     },
@@ -9,7 +9,28 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    isVerified: {
+    price: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    thumbnail: {
+        type: String,
+        default: "",
+    },
+    duration: {
+        type: String,
+        default: "",
+    },
+    lectures: {
+        type: Number,
+        default: 0,
+    },
+    isPublished: {
         type: Boolean,
         default: false,
     },
@@ -17,16 +38,12 @@ const courseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Instructor",
     },
-    rates: [
+    ratings: [
         {
             type: Number,
-        },  
+        },
     ],
-    category: {
-        type: String,
-        required: true,
-    },
-}, { timestamps: true });   
+}, { timestamps: true });
 
 const Course = mongoose.model("Course", courseSchema);
 

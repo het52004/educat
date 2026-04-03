@@ -1,9 +1,19 @@
-import useDashboardStore from '../../../store/student/useDashboardStore';
-import '../../../styles/student/Dashboard.css';
+import useDashboardStore from "../../../store/student/useDashboardStore";
+import "../../../styles/student/Dashboard.css";
 import { Icon } from "./Icons";
+import { useAuthStore } from "../../../store/student/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const { toggleSidebar } = useDashboardStore();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/studentlogin");
+  };
 
   return (
     <header className="top-bar">
@@ -20,11 +30,10 @@ function Header() {
         <button className="icon-btn">
           <Icon name="bell" />
         </button>
-        <img
-          src="https://i.pravatar.cc/100?img=33"
-          alt="User"
-          className="user-avatar"
-        />
+        <span className="user-name">{user?.fullName}</span>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </header>
   );

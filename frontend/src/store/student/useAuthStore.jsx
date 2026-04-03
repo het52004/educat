@@ -1,23 +1,26 @@
 import { create } from "zustand";
 import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:5000/student",
+  withCredentials: true,
+});
+
 export const useAuthStore = create((set) => ({
   user: null,
   requestOtpError: null,
+  loginError: null,
   error: null,
 
   requestOtp: async (data) => {
     try {
       set({ requestOtpError: "" });
-      const res = await axios.post(
-        "http://localhost:5000/student/requestStudentOtp",
-        {
-          fullName: data.fullname,
-          email: data.email,
-          password: data.password,
-          contact: data.contact,
-        },
-      );
+      const res = await api.post("/requestStudentOtp", {
+        fullName: data.fullname,
+        email: data.email,
+        password: data.password,
+        contact: data.contact,
+      });
 
       if (!res.data.success) {
         set({ requestOtpError: res.data.message });
@@ -33,13 +36,11 @@ export const useAuthStore = create((set) => ({
       return false;
     }
   },
+
   enterOtp: async (otp, email) => {
     try {
       set({ error: "" });
-      const res = await axios.post("http://localhost:5000/student/signup", {
-        email,
-        otp,
-      });
+      const res = await api.post("/signup", { email, otp });
       if (!res.data.success) {
         set({ error: res.data.message });
         return false;
@@ -53,20 +54,53 @@ export const useAuthStore = create((set) => ({
       return false;
     }
   },
-  checkAuth: async (email) => {
+
+  login: async (data) => {
     try {
-      const res = await axios.post("http://localhost:5000/student/checkAuth", {
-        email,
+      set({ loginError: "" });
+      const res = await api.post("/studentLogin", {
+        email: data.email,
+        password: data.password,
       });
       if (!res.data.success) {
-        alert(res.data.message);
+        set({ loginError: res.data.message });
+        return false;
+      } else {
+        set({ user: res.data.studentData, loginError: null });
+        return true;
+      }
+    } catch (error) {
+      set({ loginError: "Something went wrong" });
+      return false;
+    }
+  },
+
+  checkAuth: async () => {
+    try {
+      const res = await api.get("/checkAuth");
+      if (!res.data.success) {
+        set({ user: null });
         return false;
       } else {
         set({ user: res.data.studentData });
         return true;
       }
     } catch (error) {
-      alert(error);
+      set({ user: null });
+      return false;
+    }
+  },
+
+  logout: async () => {
+    try {
+      const res = await api.get("/studentLogout");
+      if (res.data.success) {
+        set({ user: null });
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
     }
   },
 }));

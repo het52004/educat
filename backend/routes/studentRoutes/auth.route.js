@@ -12,7 +12,7 @@ const app = express();
 app.post("/studentLogin", studentLogin);
 app.post("/signup", signup);
 app.post("/requestStudentOtp", requestStudentOtp);
-app.post("/checkAuth", checkAuth);
+app.get("/checkAuth", checkAuth);
 app.get("/studentLogout", studentLogout);
 
 export default app;

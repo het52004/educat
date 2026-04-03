@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const studentSchema = new mongoose.Schema({
     fullName: {
@@ -22,6 +23,16 @@ const studentSchema = new mongoose.Schema({
         required: true
     },
 }, { timestamps: true });
+
+studentSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
+
+studentSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
 
 const Student = mongoose.model('Student', studentSchema);
 

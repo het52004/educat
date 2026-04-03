@@ -1,12 +1,31 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "../../styles/instructor/Login.css";
-
-// ✅ correct relative path to assets folder
 import studyImg from "../../../assets/images/study.png";
+import { useInstructorAuthStore } from "../../store/instructor/useInstructorAuthStore";
 
 function Login() {
-  const navigate = useNavigate(); // kept, no functionality removed
+  const navigate = useNavigate();
+  const login = useInstructorAuthStore((state) => state.login);
+  const loginError = useInstructorAuthStore((state) => state.loginError);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await login(formData);
+    if (success) {
+      navigate("/instructordashboard");
+    }
+    setFormData({ email: "", password: "" });
+  };
 
   return (
     <div className="container">
@@ -14,46 +33,41 @@ function Login() {
         <img src={studyImg} alt="Study" />
       </div>
 
-      <form
-        action="includes/scripts/signmein.php"
-        method="post"
-        className="login"
-      >
+      <form className="login">
         <div className="main">
           <div className="heading">
             <h1>Sign In</h1>
           </div>
 
-          {/* message placeholder */}
-          <h4></h4>
-
           <div className="inputs">
             <input
               type="email"
-              name="educat_login_email"
+              name="email"
               className="input"
               placeholder="Email"
               autoFocus
+              value={formData.email}
+              onChange={handleChange}
               required
             />
 
             <input
               type="password"
-              name="educat_login_password"
+              name="password"
               className="input"
               placeholder="Password"
-              pattern=".{8,}"
-              title="Password must be at least 8 characters long"
+              value={formData.password}
+              onChange={handleChange}
               required
             />
           </div>
 
-          <div className="link">
-            <a href="forgot-password.php">Forgot password?</a>
+          <div className="button" onClick={handleSubmit}>
+            <input type="submit" className="btn" value="Sign In" />
           </div>
 
-          <div className="button">
-            <input type="submit" className="btn" value="Sign In" />
+          <div className="error" style={{ color: "red" }}>
+            {loginError}
           </div>
 
           <div className="signup">

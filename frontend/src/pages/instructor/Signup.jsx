@@ -1,11 +1,37 @@
-import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/instructor/Signup.css";
 import studyImg from "../../../assets/images/study.png";
+import { useInstructorAuthStore } from "../../store/instructor/useInstructorAuthStore";
 
 function Signup() {
+  const navigate = useNavigate();
+  const requestOtp = useInstructorAuthStore((state) => state.requestOtp);
+  const requestOtpError = useInstructorAuthStore((state) => state.requestOtpError);
+
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    bio: "",
+    expertise: [],
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleExpertiseChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setFormData({ ...formData, expertise: [...formData.expertise, value] });
+    } else {
+      setFormData({ ...formData, expertise: formData.expertise.filter((s) => s !== value) });
+    }
+  };
 
   const checkPasswordMatch = () => {
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
@@ -13,6 +39,15 @@ function Signup() {
     } else {
       confirmPasswordRef.current.setCustomValidity("");
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await requestOtp(formData);
+    if (success) {
+      navigate("/instructorenterotp");
+    }
+    setFormData({ name: "", email: "", password: "", bio: "", expertise: [] });
   };
 
   return (
@@ -23,42 +58,40 @@ function Signup() {
             <h1>Instructor Sign Up</h1>
           </div>
 
-          <h4></h4>
-
           <div className="inputs">
             <input
               type="text"
-              name="educat_user_fullname"
+              name="name"
               className="input"
               placeholder="Full Name"
-              pattern="^[^0-9]+$"
-              title="Please enter a valid name without numbers"
+              value={formData.name}
+              onChange={handleChange}
               autoFocus
               required
             />
 
             <input
               type="email"
-              name="educat_user_email"
+              name="email"
               className="input"
               placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
 
             <div className="expertise-container">
               <label className="expertise-label">Area of Expertise</label>
-
               <div className="expertise-options">
-                {[
-                  "Web Development",
-                  "Data Science",
-                  "AI / ML",
-                  "UI / UX",
-                  "Prompt Engineering",
-                  "Other",
-                ].map((skill) => (
+                {["Web Development", "Data Science", "AI / ML", "UI / UX", "Prompt Engineering", "Other"].map((skill) => (
                   <label key={skill} className="expertise-item">
-                    <input type="checkbox" name="expertise" value={skill} />
+                    <input
+                      type="checkbox"
+                      name="expertise"
+                      value={skill}
+                      checked={formData.expertise.includes(skill)}
+                      onChange={handleExpertiseChange}
+                    />
                     {skill}
                   </label>
                 ))}
@@ -66,40 +99,44 @@ function Signup() {
             </div>
 
             <textarea
-              name="educat_bio"
+              name="bio"
               className="input bio-textarea"
               placeholder="Short Bio (max 150 characters)"
               maxLength="150"
               rows="3"
+              value={formData.bio}
+              onChange={handleChange}
               required
             ></textarea>
 
             <input
               type="password"
-              name="educat_user_password"
+              name="password"
               className="input"
               placeholder="Password"
-              pattern=".{8,}"
-              title="Password must be at least 8 characters long"
+              value={formData.password}
+              onChange={handleChange}
               ref={passwordRef}
               required
             />
 
             <input
               type="password"
-              name="educat_user_confirm_password"
+              name="confirmPassword"
               className="input"
               placeholder="Confirm password"
-              pattern=".{8,}"
-              title="Password must be at least 8 characters long"
               ref={confirmPasswordRef}
               onInput={checkPasswordMatch}
               required
             />
           </div>
 
-          <div className="button">
+          <div className="button" onClick={handleSubmit}>
             <input type="submit" className="btn" value="Sign Up" />
+          </div>
+
+          <div className="error" style={{ color: "red" }}>
+            {requestOtpError}
           </div>
 
           <div className="signup">

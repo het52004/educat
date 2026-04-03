@@ -1,38 +1,36 @@
 import { Link, useNavigate } from "react-router-dom";
-import "../../styles/student/Signup.css";
+import "../../styles/instructor/Signup.css";
 import studyImg from "../../../assets/images/study.png";
 import { useState } from "react";
-import { useAuthStore } from "../../store/student/useAuthStore";
+import { useInstructorAuthStore } from "../../store/instructor/useInstructorAuthStore";
 
 function EnterOtp() {
-  const [otp, setOtp] = useState("");
-  const email = localStorage.getItem("email");
-  const enterOtp = useAuthStore((state) => state.enterOtp);
-  const error = useAuthStore((state) => state.error);
+  const [otp, setOtp] = useState();
+  const email = localStorage.getItem("instructorEmail");
+  const enterOtp = useInstructorAuthStore((state) => state.enterOtp);
+  const error = useInstructorAuthStore((state) => state.error);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     const success = await enterOtp(otp, email);
     if (success) {
-      localStorage.removeItem("email");
-      navigate("/studentlogin");
+      navigate("/instructorlogin");
     }
   }
 
   return (
-    <div className="container">
+    <div className="auth-container">
       <form className="login" id="signupform">
         <div className="main">
           <div className="heading">
-            <h1>Enter OTP</h1>
+            <h1>Enter Otp</h1>
           </div>
           <div className="inputs">
             <input
               type="text"
               className="input"
-              placeholder="Enter OTP sent to your email"
-              value={otp}
+              placeholder="Enter OTP"
               required
               onChange={(e) => setOtp(e.target.value)}
             />
@@ -47,8 +45,8 @@ function EnterOtp() {
           </div>
 
           <div className="signup">
-            Back to signup?
-            <Link to="/studentsignup">&nbsp;Sign Up</Link>
+            Back to signup page?
+            <Link to="/instructorsignup">&nbsp;Sign Up</Link>
           </div>
         </div>
       </form>

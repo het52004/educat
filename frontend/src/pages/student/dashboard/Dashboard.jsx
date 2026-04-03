@@ -1,5 +1,4 @@
 import "../../../styles/student/Dashboard.css";
-
 import useDashboardStore from "../../../store/student/useDashboardStore";
 import Sidebar from "../../../components/student/dashboard/Sidebar";
 import Home from "../../../components/student/dashboard/Home";
@@ -14,22 +13,20 @@ export default function Dashboard() {
   const { activeTab, isSidebarOpen, closeSidebar } = useDashboardStore();
   const navigate = useNavigate();
   const checkAuth = useAuthStore((state) => state.checkAuth);
+
   useEffect(() => {
     async function verifyAuth() {
-      const email = localStorage.getItem("email");
-      const res = await checkAuth(email);
-
+      const res = await checkAuth();
       if (!res) {
         navigate("/studentlogin");
       }
     }
-
     verifyAuth();
   }, []);
+
   return (
     <div className="app-container">
       <Sidebar />
-
       <main className="main-content">
         <Header />
         <div className="content-area">
@@ -38,7 +35,6 @@ export default function Dashboard() {
           {activeTab === "messages" && <Messages />}
         </div>
       </main>
-
       {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
     </div>
   );
