@@ -1,10 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const api = axios.create({
-    baseURL: "http://localhost:5000/lectures",
-    withCredentials: true,
-});
+import instructorApi from "../../api/instructorApi";
 
 const useLectureStore = create((set) => ({
     lectures: [],
@@ -15,11 +10,9 @@ const useLectureStore = create((set) => ({
     fetchLectures: async (courseId) => {
         try {
             set({ loading: true });
-            const res = await api.get(`/course/${courseId}`);
-            if (res.data.success) {
-                set({ lectures: res.data.lectures });
-            }
-        } catch (error) {
+            const res = await instructorApi.get(`/lectures/instructor/course/${courseId}`);
+            if (res.data.success) set({ lectures: res.data.lectures });
+        } catch {
         } finally {
             set({ loading: false });
         }
@@ -28,7 +21,7 @@ const useLectureStore = create((set) => ({
     uploadLecture: async (courseId, formData, onProgress) => {
         try {
             set({ uploading: true, uploadProgress: 0 });
-            const res = await api.post("/upload", formData, {
+            const res = await instructorApi.post("/lectures/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
                 onUploadProgress: (e) => {
                     const pct = Math.round((e.loaded * 100) / e.total);
@@ -36,11 +29,9 @@ const useLectureStore = create((set) => ({
                     if (onProgress) onProgress(pct);
                 },
             });
-            if (res.data.success) {
-                set((state) => ({ lectures: [...state.lectures, res.data.lecture] }));
-            }
+            if (res.data.success) set((state) => ({ lectures: [...state.lectures, res.data.lecture] }));
             return res.data;
-        } catch (error) {
+        } catch {
             return { success: false, message: "Upload failed" };
         } finally {
             set({ uploading: false, uploadProgress: 0 });
@@ -49,12 +40,10 @@ const useLectureStore = create((set) => ({
 
     deleteLecture: async (lectureId) => {
         try {
-            const res = await api.delete(`/${lectureId}`);
-            if (res.data.success) {
-                set((state) => ({ lectures: state.lectures.filter((l) => l._id !== lectureId) }));
-            }
+            const res = await instructorApi.delete(`/lectures/${lectureId}`);
+            if (res.data.success) set((state) => ({ lectures: state.lectures.filter((l) => l._id !== lectureId) }));
             return res.data;
-        } catch (error) {
+        } catch {
             return { success: false, message: "Delete failed" };
         }
     },

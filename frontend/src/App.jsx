@@ -1,36 +1,58 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import StudentProtectedRoute from "./routes/StudentProtectedRoute";
+import InstructorProtectedRoute from "./routes/InstructorProtectedRoute";
+
 import RoleSelection from "./pages/RoleSelection";
+import ContactUs from "./pages/ContactUs";
+
 import StudentLogin from "./pages/student/Login";
 import StudentSignup from "./pages/student/Signup";
+import StudentEnterOtp from "./pages/student/EnterOtp";
+import Dashboard from "./pages/student/dashboard/Dashboard";
+import CourseDetails from "./pages/student/dashboard/CourseDetails";
+import CoursePlayer from "./pages/student/resume-course/CoursePlayer";
+
 import InstructorLogin from "./pages/instructor/Login";
 import InstructorSignup from "./pages/instructor/Signup";
 import InstructorEnterOtp from "./pages/instructor/EnterOtp";
-import AdminLogin from "./pages/admin/Login";
-import Dashboard from "./pages/student/dashboard/Dashboard";
-import CoursePlayer from "./pages/student/resume-course/CoursePlayer";
-import CourseDetails from "./pages/student/dashboard/CourseDetails";
 import InstructorDashboard from "./pages/instructor/dashboard/InstructorDashboard";
-import EnterOtp from "./pages/student/EnterOtp";
+
+import AdminLogin from "./pages/admin/Login";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* Public routes */}
         <Route path="/" element={<RoleSelection />} />
+        <Route path="/contact" element={<ContactUs />} />
 
-        <Route path="/studentsignup" element={<StudentSignup />} />
+        {/* Student public routes */}
         <Route path="/studentlogin" element={<StudentLogin />} />
-        <Route path="/enterotp" element={<EnterOtp />} />
-        <Route path="/studentdashboard" element={<Dashboard />} />
-        <Route path="/course/:id" element={<CourseDetails />} />
-        <Route path="/learn/:id" element={<CoursePlayer />} />
+        <Route path="/studentsignup" element={<StudentSignup />} />
+        <Route path="/enterotp" element={<StudentEnterOtp />} />
 
-        <Route path="/instructorsignup" element={<InstructorSignup />} />
+        {/* Student protected routes */}
+        <Route element={<StudentProtectedRoute />}>
+          <Route path="/studentdashboard" element={<Dashboard />} />
+          <Route path="/course/:id" element={<CourseDetails />} />
+          <Route path="/learn/:id" element={<CoursePlayer />} />
+        </Route>
+
+        {/* Instructor public routes */}
         <Route path="/instructorlogin" element={<InstructorLogin />} />
+        <Route path="/instructorsignup" element={<InstructorSignup />} />
         <Route path="/instructorenterotp" element={<InstructorEnterOtp />} />
-        <Route path="/instructordashboard" element={<InstructorDashboard />} />
 
+        {/* Instructor protected routes */}
+        <Route element={<InstructorProtectedRoute />}>
+          <Route path="/instructordashboard" element={<InstructorDashboard />} />
+        </Route>
+
+        {/* Admin routes */}
         <Route path="/adminlogin" element={<AdminLogin />} />
+
       </Routes>
     </BrowserRouter>
   );

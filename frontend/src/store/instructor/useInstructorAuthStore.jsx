@@ -1,15 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const api = axios.create({
-    baseURL: "http://localhost:5000/instructor",
-    withCredentials: true,
-});
-
-const courseApi = axios.create({
-    baseURL: "http://localhost:5000/course",
-    withCredentials: true,
-});
+import instructorApi from "../../api/instructorApi";
 
 export const useInstructorAuthStore = create((set) => ({
     instructor: null,
@@ -18,10 +8,15 @@ export const useInstructorAuthStore = create((set) => ({
     loginError: null,
     error: null,
 
+    forceLogout: () => {
+        set({ instructor: null, courses: [] });
+        window.location.href = "/instructorlogin";
+    },
+
     requestOtp: async (data) => {
         try {
             set({ requestOtpError: "" });
-            const res = await api.post("/requestInstructorOtp", {
+            const res = await instructorApi.post("/instructor/requestInstructorOtp", {
                 name: data.name,
                 email: data.email,
                 password: data.password,
@@ -31,13 +26,12 @@ export const useInstructorAuthStore = create((set) => ({
             if (!res.data.success) {
                 set({ requestOtpError: res.data.message });
                 return false;
-            } else {
-                alert(res.data.message);
-                localStorage.setItem("instructorEmail", data.email);
-                set({ requestOtpError: null });
-                return true;
             }
-        } catch (error) {
+            alert(res.data.message);
+            localStorage.setItem("instructorEmail", data.email);
+            set({ requestOtpError: null });
+            return true;
+        } catch {
             set({ requestOtpError: "Something went wrong" });
             return false;
         }
@@ -46,17 +40,16 @@ export const useInstructorAuthStore = create((set) => ({
     enterOtp: async (otp, email) => {
         try {
             set({ error: "" });
-            const res = await api.post("/instructorSignup", { email, otp });
+            const res = await instructorApi.post("/instructor/instructorSignup", { email, otp });
             if (!res.data.success) {
                 set({ error: res.data.message });
                 return false;
-            } else {
-                alert(res.data.message);
-                localStorage.removeItem("instructorEmail");
-                set({ error: null });
-                return true;
             }
-        } catch (error) {
+            alert(res.data.message);
+            localStorage.removeItem("instructorEmail");
+            set({ error: null });
+            return true;
+        } catch {
             set({ error: "Something went wrong" });
             return false;
         }
@@ -65,18 +58,17 @@ export const useInstructorAuthStore = create((set) => ({
     login: async (data) => {
         try {
             set({ loginError: "" });
-            const res = await api.post("/instructorLogin", {
+            const res = await instructorApi.post("/instructor/instructorLogin", {
                 email: data.email,
                 password: data.password,
             });
             if (!res.data.success) {
                 set({ loginError: res.data.message });
                 return false;
-            } else {
-                set({ instructor: res.data.instructorData, loginError: null });
-                return true;
             }
-        } catch (error) {
+            set({ instructor: res.data.instructorData, loginError: null });
+            return true;
+        } catch {
             set({ loginError: "Something went wrong" });
             return false;
         }
@@ -84,15 +76,14 @@ export const useInstructorAuthStore = create((set) => ({
 
     checkAuth: async () => {
         try {
-            const res = await api.get("/checkAuth");
+            const res = await instructorApi.get("/instructor/checkAuth");
             if (!res.data.success) {
                 set({ instructor: null });
                 return false;
-            } else {
-                set({ instructor: res.data.instructorData });
-                return true;
             }
-        } catch (error) {
+            set({ instructor: res.data.instructorData });
+            return true;
+        } catch {
             set({ instructor: null });
             return false;
         }
@@ -100,56 +91,49 @@ export const useInstructorAuthStore = create((set) => ({
 
     logout: async () => {
         try {
-            const res = await api.get("/instructorLogout");
-            if (res.data.success) {
-                set({ instructor: null, courses: [] });
-                return true;
-            }
-            return false;
-        } catch (error) {
+            await instructorApi.get("/instructor/instructorLogout");
+            set({ instructor: null, courses: [] });
+            return true;
+        } catch {
+            set({ instructor: null, courses: [] });
             return false;
         }
     },
 
     createCourse: async (data) => {
         try {
-            const res = await courseApi.post("/create", data);
-            if (!res.data.success) {
-                return { success: false, message: res.data.message };
-            } else {
-                set((state) => ({ courses: [res.data.course, ...state.courses] }));
-                return { success: true };
-            }
-        } catch (error) {
+            const res = await instructorApi.post("/course/create", data);
+            if (!res.data.success) return { success: false, message: res.data.message };
+            set((state) => ({ courses: [res.data.course, ...state.courses] }));
+            return { success: true };
+        } catch {
             return { success: false, message: "Something went wrong" };
         }
     },
 
     fetchInstructorCourses: async () => {
         try {
-            const res = await courseApi.get("/instructor-courses");
-            if (res.data.success) {
-                set({ courses: res.data.courses });
-            }
-        } catch (error) {}
+            const res = await instructorApi.get("/course/instructor-courses");
+            if (res.data.success) set({ courses: res.data.courses });
+        } catch {}
     },
 
     deleteCourse: async (courseId) => {
         try {
-            const res = await courseApi.delete(`/delete/${courseId}`);
+            const res = await instructorApi.delete(`/course/delete/${courseId}`);
             if (res.data.success) {
                 set((state) => ({ courses: state.courses.filter((c) => c._id !== courseId) }));
                 return true;
             }
             return false;
-        } catch (error) {
+        } catch {
             return false;
         }
     },
 
     updateCourse: async (courseId, data) => {
         try {
-            const res = await courseApi.put(`/update/${courseId}`, data);
+            const res = await instructorApi.put(`/course/update/${courseId}`, data);
             if (res.data.success) {
                 set((state) => ({
                     courses: state.courses.map((c) => (c._id === courseId ? res.data.course : c)),
@@ -157,7 +141,7 @@ export const useInstructorAuthStore = create((set) => ({
                 return { success: true };
             }
             return { success: false, message: res.data.message };
-        } catch (error) {
+        } catch {
             return { success: false, message: "Something went wrong" };
         }
     },

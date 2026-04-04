@@ -7,14 +7,16 @@ import {
     getAllPublishedCourses,
     getCourseById,
 } from "../../controllers/courseControllers/course.controller.js";
+import verifyInstructor from "../../middleware/verifyInstructor.js";
 
-const app = express();
+const router = express.Router();
 
-app.post("/create", createCourse);
-app.get("/instructor-courses", getInstructorCourses);
-app.delete("/delete/:courseId", deleteCourse);
-app.put("/update/:courseId", updateCourse);
-app.get("/all", getAllPublishedCourses);
-app.get("/:courseId", getCourseById);
+router.get("/all", getAllPublishedCourses);
+router.get("/:courseId", getCourseById);
 
-export default app;
+router.post("/create", verifyInstructor, createCourse);
+router.get("/instructor-courses", verifyInstructor, getInstructorCourses);
+router.delete("/delete/:courseId", verifyInstructor, deleteCourse);
+router.put("/update/:courseId", verifyInstructor, updateCourse);
+
+export default router;

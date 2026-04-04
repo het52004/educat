@@ -8,17 +8,19 @@ import {
 } from "../../controllers/studentControllers/auth.controller.js";
 import { updateProfile, deleteAccount } from "../../controllers/studentControllers/profile.controller.js";
 import { enrollCourse, isEnrolled } from "../../controllers/studentControllers/enroll.controller.js";
+import verifyStudent from "../../middleware/verifyStudent.js";
 
-const app = express();
+const router = express.Router();
 
-app.post("/studentLogin", studentLogin);
-app.post("/signup", signup);
-app.post("/requestStudentOtp", requestStudentOtp);
-app.get("/checkAuth", checkAuth);
-app.get("/studentLogout", studentLogout);
-app.put("/updateProfile", updateProfile);
-app.delete("/deleteAccount", deleteAccount);
-app.post("/enroll/:courseId", enrollCourse);
-app.get("/isEnrolled/:courseId", isEnrolled);
+router.post("/studentLogin", studentLogin);
+router.post("/signup", signup);
+router.post("/requestStudentOtp", requestStudentOtp);
 
-export default app;
+router.get("/checkAuth", verifyStudent, checkAuth);
+router.get("/studentLogout", verifyStudent, studentLogout);
+router.put("/updateProfile", verifyStudent, updateProfile);
+router.delete("/deleteAccount", verifyStudent, deleteAccount);
+router.post("/enroll/:courseId", verifyStudent, enrollCourse);
+router.get("/isEnrolled/:courseId", verifyStudent, isEnrolled);
+
+export default router;

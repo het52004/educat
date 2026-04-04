@@ -1,10 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const api = axios.create({
-    baseURL: "http://localhost:5000/messages",
-    withCredentials: true,
-});
+import studentApi from "../../api/studentApi";
 
 const useMessageStore = create((set) => ({
     instructors: [],
@@ -14,25 +9,19 @@ const useMessageStore = create((set) => ({
 
     fetchInstructors: async () => {
         try {
-            const res = await api.get("/instructors");
-            if (res.data.success) {
-                set({ instructors: res.data.instructors });
-            }
-        } catch (error) {}
+            const res = await studentApi.get("/messages/instructors");
+            if (res.data.success) set({ instructors: res.data.instructors });
+        } catch {}
     },
 
-    selectInstructor: (instructor) => {
-        set({ selectedInstructor: instructor, messages: [] });
-    },
+    selectInstructor: (instructor) => set({ selectedInstructor: instructor, messages: [] }),
 
     fetchMessages: async (conversationId) => {
         try {
             set({ loading: true });
-            const res = await api.get(`/${conversationId}`);
-            if (res.data.success) {
-                set({ messages: res.data.messages });
-            }
-        } catch (error) {
+            const res = await studentApi.get(`/messages/${conversationId}`);
+            if (res.data.success) set({ messages: res.data.messages });
+        } catch {
         } finally {
             set({ loading: false });
         }
@@ -40,12 +29,10 @@ const useMessageStore = create((set) => ({
 
     sendMessage: async (conversationId, text) => {
         try {
-            const res = await api.post("/send", { conversationId, text, senderRole: "student" });
-            if (res.data.success) {
-                set((state) => ({ messages: [...state.messages, res.data.message] }));
-            }
+            const res = await studentApi.post("/messages/send", { conversationId, text, senderRole: "student" });
+            if (res.data.success) set((state) => ({ messages: [...state.messages, res.data.message] }));
             return res.data;
-        } catch (error) {
+        } catch {
             return { success: false };
         }
     },

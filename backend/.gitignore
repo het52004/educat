@@ -3,3 +3,4 @@
 uploads/videos/*.webm
 uploads/videos/*.ogg
 uploads/videos/*.mov
+.env

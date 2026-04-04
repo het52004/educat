@@ -6,13 +6,15 @@ import {
   instructorSignup,
   checkInstructorAuth,
 } from "../../controllers/instructorControllers/auth.controller.js";
+import verifyInstructor from "../../middleware/verifyInstructor.js";
 
-const app = express();
+const router = express.Router();
 
-app.post("/instructorLogin", instructorLogin);
-app.post("/instructorSignup", instructorSignup);
-app.post("/requestInstructorOtp", requestInstructorOtp);
-app.get("/checkAuth", checkInstructorAuth);
-app.get("/instructorLogout", instructorLogout);
+router.post("/instructorLogin", instructorLogin);
+router.post("/instructorSignup", instructorSignup);
+router.post("/requestInstructorOtp", requestInstructorOtp);
 
-export default app;
+router.get("/checkAuth", verifyInstructor, checkInstructorAuth);
+router.get("/instructorLogout", verifyInstructor, instructorLogout);
+
+export default router;

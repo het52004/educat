@@ -24,10 +24,6 @@ export default function CoursePlayer() {
     const isEnrolled = user?.enrolledCourses?.map(String).includes(String(id));
 
     useEffect(() => {
-        if (!user) {
-            navigate("/studentlogin");
-            return;
-        }
         if (user && !isEnrolled) {
             navigate(`/course/${id}`);
             return;

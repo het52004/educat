@@ -1,142 +1,129 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:5000/student",
-  withCredentials: true,
-});
+import studentApi from "../../api/studentApi";
 
 export const useAuthStore = create((set) => ({
-  user: null,
-  requestOtpError: null,
-  loginError: null,
-  error: null,
+    user: null,
+    requestOtpError: null,
+    loginError: null,
+    error: null,
 
-  requestOtp: async (data) => {
-    try {
-      set({ requestOtpError: "" });
-      const res = await api.post("/requestStudentOtp", {
-        fullName: data.fullname,
-        email: data.email,
-        password: data.password,
-        contact: data.contact,
-      });
-
-      if (!res.data.success) {
-        set({ requestOtpError: res.data.message });
-        return false;
-      } else {
-        alert(res.data.message);
-        localStorage.setItem("email", data.email);
-        set({ requestOtpError: null });
-        return true;
-      }
-    } catch (error) {
-      set({ requestOtpError: "Something went wrong" });
-      return false;
-    }
-  },
-
-  enterOtp: async (otp, email) => {
-    try {
-      set({ error: "" });
-      const res = await api.post("/signup", { email, otp });
-      if (!res.data.success) {
-        set({ error: res.data.message });
-        return false;
-      } else {
-        alert(res.data.message);
-        set({ error: null });
-        return true;
-      }
-    } catch (error) {
-      set({ error: "Something went wrong" });
-      return false;
-    }
-  },
-
-  login: async (data) => {
-    try {
-      set({ loginError: "" });
-      const res = await api.post("/studentLogin", {
-        email: data.email,
-        password: data.password,
-      });
-      if (!res.data.success) {
-        set({ loginError: res.data.message });
-        return false;
-      } else {
-        set({ user: res.data.studentData, loginError: null });
-        return true;
-      }
-    } catch (error) {
-      set({ loginError: "Something went wrong" });
-      return false;
-    }
-  },
-
-  checkAuth: async () => {
-    try {
-      const res = await api.get("/checkAuth");
-      if (!res.data.success) {
+    forceLogout: () => {
         set({ user: null });
-        return false;
-      } else {
-        set({ user: res.data.studentData });
-        return true;
-      }
-    } catch (error) {
-      set({ user: null });
-      return false;
-    }
-  },
+        window.location.href = "/studentlogin";
+    },
 
-  logout: async () => {
-    try {
-      const res = await api.get("/studentLogout");
-      if (res.data.success) {
-        set({ user: null });
-        return true;
-      }
-      return false;
-    } catch (error) {
-      return false;
-    }
-  },
+    requestOtp: async (data) => {
+        try {
+            set({ requestOtpError: "" });
+            const res = await studentApi.post("/student/requestStudentOtp", {
+                fullName: data.fullname,
+                email: data.email,
+                password: data.password,
+                contact: data.contact,
+            });
+            if (!res.data.success) {
+                set({ requestOtpError: res.data.message });
+                return false;
+            }
+            alert(res.data.message);
+            localStorage.setItem("email", data.email);
+            set({ requestOtpError: null });
+            return true;
+        } catch {
+            set({ requestOtpError: "Something went wrong" });
+            return false;
+        }
+    },
 
-  updateProfile: async (data) => {
-    try {
-      const res = await api.put("/updateProfile", data);
-      if (res.data.success) {
-        set({ user: res.data.studentData });
-      }
-      return res.data;
-    } catch (error) {
-      return { success: false, message: "Something went wrong" };
-    }
-  },
+    enterOtp: async (otp, email) => {
+        try {
+            set({ error: "" });
+            const res = await studentApi.post("/student/signup", { email, otp });
+            if (!res.data.success) {
+                set({ error: res.data.message });
+                return false;
+            }
+            alert(res.data.message);
+            set({ error: null });
+            return true;
+        } catch {
+            set({ error: "Something went wrong" });
+            return false;
+        }
+    },
 
-  deleteAccount: async (password) => {
-    try {
-      const res = await api.delete("/deleteAccount", { data: { password } });
-      if (res.data.success) {
-        set({ user: null });
-      }
-      return res.data;
-    } catch (error) {
-      return { success: false, message: "Something went wrong" };
-    }
-  },
+    login: async (data) => {
+        try {
+            set({ loginError: "" });
+            const res = await studentApi.post("/student/studentLogin", {
+                email: data.email,
+                password: data.password,
+            });
+            if (!res.data.success) {
+                set({ loginError: res.data.message });
+                return false;
+            }
+            set({ user: res.data.studentData, loginError: null });
+            return true;
+        } catch {
+            set({ loginError: "Something went wrong" });
+            return false;
+        }
+    },
 
-  enrollCourse: async (courseId) => {
-    try {
-      const res = await api.post(`/enroll/${courseId}`);
-      if (res.data.success) {
-        set({ user: res.data.studentData });
-      }
-      return res.data;
-    } catch (error) {
-      return { success: false, message: "Something went wrong" };
-    }
-  },
+    checkAuth: async () => {
+        try {
+            const res = await studentApi.get("/student/checkAuth");
+            if (!res.data.success) {
+                set({ user: null });
+                return false;
+            }
+            set({ user: res.data.studentData });
+            return true;
+        } catch {
+            set({ user: null });
+            return false;
+        }
+    },
+
+    logout: async () => {
+        try {
+            await studentApi.get("/student/studentLogout");
+            set({ user: null });
+            return true;
+        } catch {
+            set({ user: null });
+            return false;
+        }
+    },
+
+    updateProfile: async (data) => {
+        try {
+            const res = await studentApi.put("/student/updateProfile", data);
+            if (res.data.success) set({ user: res.data.studentData });
+            return res.data;
+        } catch {
+            return { success: false, message: "Something went wrong" };
+        }
+    },
+
+    deleteAccount: async (password) => {
+        try {
+            const res = await studentApi.delete("/student/deleteAccount", { data: { password } });
+            if (res.data.success) set({ user: null });
+            return res.data;
+        } catch {
+            return { success: false, message: "Something went wrong" };
+        }
+    },
+
+    enrollCourse: async (courseId) => {
+        try {
+            const res = await studentApi.post(`/student/enroll/${courseId}`);
+            if (res.data.success) set({ user: res.data.studentData });
+            return res.data;
+        } catch {
+            return { success: false, message: "Something went wrong" };
+        }
+    },
 }));

@@ -5,12 +5,30 @@ import {
     getMessages,
     sendMessage,
 } from "../../controllers/messageControllers/message.controller.js";
+import verifyStudent from "../../middleware/verifyStudent.js";
+import verifyInstructor from "../../middleware/verifyInstructor.js";
 
-const app = express();
+const tryStudent = async (req, res, next) => {
+    try {
+        await verifyStudent(req, res, next);
+    } catch {
+        next();
+    }
+};
 
-app.get("/instructors", getInstructorsForStudent);
-app.get("/students", getStudentsForInstructor);
-app.get("/:conversationId", getMessages);
-app.post("/send", sendMessage);
+const tryInstructor = async (req, res, next) => {
+    try {
+        await verifyInstructor(req, res, next);
+    } catch {
+        next();
+    }
+};
 
-export default app;
+const router = express.Router();
+
+router.get("/instructors", verifyStudent, getInstructorsForStudent);
+router.get("/students", verifyInstructor, getStudentsForInstructor);
+router.get("/:conversationId", getMessages);
+router.post("/send", tryStudent, tryInstructor, sendMessage);
+
+export default router;

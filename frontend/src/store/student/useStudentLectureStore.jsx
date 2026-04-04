@@ -1,10 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const api = axios.create({
-    baseURL: "http://localhost:5000/lectures",
-    withCredentials: true,
-});
+import studentApi from "../../api/studentApi";
 
 const useStudentLectureStore = create((set) => ({
     lectures: [],
@@ -13,11 +8,9 @@ const useStudentLectureStore = create((set) => ({
     fetchLectures: async (courseId) => {
         try {
             set({ loading: true, lectures: [] });
-            const res = await api.get(`/course/${courseId}`);
-            if (res.data.success) {
-                set({ lectures: res.data.lectures });
-            }
-        } catch (error) {
+            const res = await studentApi.get(`/lectures/course/${courseId}`);
+            if (res.data.success) set({ lectures: res.data.lectures });
+        } catch {
         } finally {
             set({ loading: false });
         }

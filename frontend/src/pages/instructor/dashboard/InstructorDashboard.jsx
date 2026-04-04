@@ -11,7 +11,7 @@ import ManageLectures from "../../../components/instructor/dashboard/ManageLectu
 
 function InstructorDashboard() {
     const navigate = useNavigate();
-    const { instructor, courses, checkAuth, logout, fetchInstructorCourses, createCourse, deleteCourse, updateCourse } = useInstructorAuthStore();
+    const { instructor, courses, logout, fetchInstructorCourses, createCourse, deleteCourse, updateCourse } = useInstructorAuthStore();
 
     const [activeTab, setActiveTab] = useState("dashboard");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,15 +19,7 @@ function InstructorDashboard() {
     const [managingCourse, setManagingCourse] = useState(null);
 
     useEffect(() => {
-        async function init() {
-            const ok = await checkAuth();
-            if (!ok) {
-                navigate("/instructorlogin");
-                return;
-            }
-            fetchInstructorCourses();
-        }
-        init();
+        fetchInstructorCourses();
     }, []);
 
     const switchTab = (tab) => {

@@ -7,24 +7,9 @@ import EnrolledCourses from "../../../components/student/dashboard/EnrolledCours
 import Messages from "../../../components/student/dashboard/Messages";
 import ViewProfile from "../../../components/student/dashboard/ViewProfile";
 import Header from "../../../components/student/dashboard/Header";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useAuthStore } from "../../../store/student/useAuthStore";
 
 export default function Dashboard() {
   const { activeTab, isSidebarOpen, closeSidebar } = useDashboardStore();
-  const navigate = useNavigate();
-  const checkAuth = useAuthStore((state) => state.checkAuth);
-
-  useEffect(() => {
-    async function verifyAuth() {
-      const res = await checkAuth();
-      if (!res) {
-        navigate("/studentlogin");
-      }
-    }
-    verifyAuth();
-  }, []);
 
   return (
     <div className="app-container">

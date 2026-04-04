@@ -1,10 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const api = axios.create({
-    baseURL: "http://localhost:5000/course",
-    withCredentials: true,
-});
+import studentApi from "../../api/studentApi";
 
 export const useCourseStore = create((set) => ({
     courses: [],
@@ -14,11 +9,9 @@ export const useCourseStore = create((set) => ({
     fetchPublishedCourses: async () => {
         try {
             set({ loading: true });
-            const res = await api.get("/all");
-            if (res.data.success) {
-                set({ courses: res.data.courses });
-            }
-        } catch (error) {
+            const res = await studentApi.get("/course/all");
+            if (res.data.success) set({ courses: res.data.courses });
+        } catch {
         } finally {
             set({ loading: false });
         }
@@ -27,11 +20,9 @@ export const useCourseStore = create((set) => ({
     fetchCourseById: async (courseId) => {
         try {
             set({ loading: true, selectedCourse: null });
-            const res = await api.get(`/${courseId}`);
-            if (res.data.success) {
-                set({ selectedCourse: res.data.course });
-            }
-        } catch (error) {
+            const res = await studentApi.get(`/course/${courseId}`);
+            if (res.data.success) set({ selectedCourse: res.data.course });
+        } catch {
         } finally {
             set({ loading: false });
         }
