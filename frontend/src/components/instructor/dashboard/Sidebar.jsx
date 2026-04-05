@@ -1,4 +1,4 @@
-import { FaHome, FaBook, FaComments, FaCog, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import { FaHome, FaBook, FaComments, FaCog, FaSignOutAlt, FaBars, FaTimes, FaChartBar } from "react-icons/fa";
 import "../../../styles/instructor/Dashboard.css";
 
 function Sidebar({ activeTab, isSidebarOpen, onSwitch, onToggle, onLogout }) {
@@ -19,6 +19,9 @@ function Sidebar({ activeTab, isSidebarOpen, onSwitch, onToggle, onLogout }) {
                 <nav className="nav-menu">
                     <button className={activeTab === "dashboard" ? "active" : ""} onClick={() => onSwitch("dashboard")}>
                         <FaHome /> Dashboard
+                    </button>
+                    <button className={activeTab === "analytics" ? "active" : ""} onClick={() => onSwitch("analytics")}>
+                        <FaChartBar /> Analytics
                     </button>
                     <button className={activeTab === "create-course" ? "active" : ""} onClick={() => onSwitch("create-course")}>
                         <FaBook /> Create Course

@@ -41,6 +41,12 @@ function Sidebar() {
           <Icon name="graduation" /> <span>Enrolled Courses</span>
         </button>
         <button
+          className={activeTab === "certificates" ? "active" : ""}
+          onClick={() => handleTabClick("certificates")}
+        >
+          <Icon name="certificate" /> <span>My Certificates</span>
+        </button>
+        <button
           className={activeTab === "messages" ? "active" : ""}
           onClick={() => handleTabClick("messages")}
         >

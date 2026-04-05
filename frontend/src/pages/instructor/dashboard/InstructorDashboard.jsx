@@ -8,6 +8,8 @@ import CourseForm from "../../../components/instructor/dashboard/CourseForm";
 import InstructorMessages from "../../../components/instructor/dashboard/InstructorMessages";
 import Settings from "../../../components/instructor/dashboard/Settings";
 import ManageLectures from "../../../components/instructor/dashboard/ManageLectures";
+import AnalyticsDashboard from "../../../components/instructor/dashboard/AnalyticsDashboard";
+import QuizBuilder from "../../../components/instructor/dashboard/QuizBuilder";
 
 function InstructorDashboard() {
     const navigate = useNavigate();
@@ -17,6 +19,7 @@ function InstructorDashboard() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [editingCourse, setEditingCourse] = useState(null);
     const [managingCourse, setManagingCourse] = useState(null);
+    const [quizCourse, setQuizCourse] = useState(null);
 
     useEffect(() => {
         fetchInstructorCourses();
@@ -25,6 +28,7 @@ function InstructorDashboard() {
     const switchTab = (tab) => {
         if (tab !== "create-course") setEditingCourse(null);
         if (tab !== "manage-lectures") setManagingCourse(null);
+        if (tab !== "quiz-builder") setQuizCourse(null);
         setActiveTab(tab);
         setIsSidebarOpen(false);
     };
@@ -48,6 +52,11 @@ function InstructorDashboard() {
     const handleManageLectures = (course) => {
         setManagingCourse(course);
         setActiveTab("manage-lectures");
+    };
+
+    const handleManageQuiz = (course) => {
+        setQuizCourse(course);
+        setActiveTab("quiz-builder");
     };
 
     const handleCourseSubmit = async (formData) => {
@@ -99,8 +108,10 @@ function InstructorDashboard() {
                             onEdit={handleEdit}
                             onDelete={handleDelete}
                             onManageLectures={handleManageLectures}
+                            onManageQuiz={handleManageQuiz}
                         />
                     )}
+                    {activeTab === "analytics" && <AnalyticsDashboard />}
                     {activeTab === "create-course" && (
                         <CourseForm
                             editingCourse={editingCourse}
@@ -111,6 +122,12 @@ function InstructorDashboard() {
                     {activeTab === "manage-lectures" && managingCourse && (
                         <ManageLectures
                             course={managingCourse}
+                            onBack={() => switchTab("dashboard")}
+                        />
+                    )}
+                    {activeTab === "quiz-builder" && quizCourse && (
+                        <QuizBuilder
+                            course={quizCourse}
                             onBack={() => switchTab("dashboard")}
                         />
                     )}

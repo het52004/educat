@@ -7,6 +7,7 @@ import EnrolledCourses from "../../../components/student/dashboard/EnrolledCours
 import Messages from "../../../components/student/dashboard/Messages";
 import ViewProfile from "../../../components/student/dashboard/ViewProfile";
 import Header from "../../../components/student/dashboard/Header";
+import MyCertificates from "../../../components/student/dashboard/MyCertificates";
 
 export default function Dashboard() {
   const { activeTab, isSidebarOpen, closeSidebar } = useDashboardStore();
@@ -20,6 +21,7 @@ export default function Dashboard() {
           {activeTab === "home" && <Home />}
           {activeTab === "browse-courses" && <BrowseNewCourses />}
           {activeTab === "enrolled-courses" && <EnrolledCourses />}
+          {activeTab === "certificates" && <MyCertificates />}
           {activeTab === "messages" && <Messages />}
           {activeTab === "profile" && <ViewProfile />}
         </div>

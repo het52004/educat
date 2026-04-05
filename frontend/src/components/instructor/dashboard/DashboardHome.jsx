@@ -1,7 +1,7 @@
-import { FaPlus, FaEdit, FaTrash, FaPlayCircle } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaPlayCircle, FaClipboardList } from "react-icons/fa";
 import "../../../styles/instructor/Dashboard.css";
 
-function DashboardHome({ courses, instructor, onNewCourse, onEdit, onDelete, onManageLectures }) {
+function DashboardHome({ courses, instructor, onNewCourse, onEdit, onDelete, onManageLectures, onManageQuiz }) {
     return (
         <>
             <div className="stats-grid">
@@ -57,6 +57,9 @@ function DashboardHome({ courses, instructor, onNewCourse, onEdit, onDelete, onM
                                         <div className="action-buttons">
                                             <button className="btn-icon" style={{ color: "#4f46e5" }} onClick={() => onManageLectures(course)} title="Manage Lectures">
                                                 <FaPlayCircle />
+                                            </button>
+                                            <button className="btn-icon" style={{ color: "#7c3aed" }} onClick={() => onManageQuiz(course)} title="Manage Quiz">
+                                                <FaClipboardList />
                                             </button>
                                             <button className="btn-icon edit" onClick={() => onEdit(course)}>
                                                 <FaEdit />

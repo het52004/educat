@@ -5,6 +5,8 @@ import { CourseIcons } from "../../../components/student/dashboard/Icons";
 import useStudentLectureStore from "../../../store/student/useStudentLectureStore";
 import { useCourseStore } from "../../../store/student/useCourseStore";
 import { useAuthStore } from "../../../store/student/useAuthStore";
+import ReviewsTab from "../../../components/student/dashboard/ReviewsTab";
+import QuizTab from "../../../components/student/dashboard/QuizTab";
 
 const STREAM_BASE = "http://localhost:5000/lectures/stream";
 
@@ -59,6 +61,8 @@ export default function CoursePlayer() {
         );
     }
 
+    const tabs = ["Overview", "Reviews", "Quiz & Certificate"];
+
     return (
         <div className="layout-container">
             <main className="main-stage">
@@ -92,7 +96,7 @@ export default function CoursePlayer() {
 
                 <div className="tabs-container">
                     <div className="tabs-list">
-                        {["Overview"].map((tab) => (
+                        {tabs.map((tab) => (
                             <button
                                 key={tab}
                                 className={`tab-btn ${activeTab === tab ? "active" : ""}`}
@@ -112,6 +116,14 @@ export default function CoursePlayer() {
                                 )}
                             </div>
                         </div>
+                    )}
+
+                    {activeTab === "Reviews" && (
+                        <ReviewsTab courseId={id} />
+                    )}
+
+                    {activeTab === "Quiz & Certificate" && (
+                        <QuizTab courseId={id} courseTitle={selectedCourse?.title || "Course"} />
                     )}
                 </div>
             </main>

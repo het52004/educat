@@ -9,6 +9,9 @@ import instructorRoutes from "./routes/instructorRoutes/auth.route.js";
 import courseRoutes from "./routes/courseRoutes/course.route.js";
 import messageRoutes from "./routes/messageRoutes/message.route.js";
 import lectureRoutes from "./routes/lectureRoutes/lecture.route.js";
+import feedbackRoutes from "./routes/feedbackRoutes/feedback.route.js";
+import quizRoutes from "./routes/quizRoutes/quiz.route.js";
+import analyticsRoutes from "./routes/analyticsRoutes/analytics.route.js";
 
 const app = express();
 
@@ -31,6 +34,9 @@ app.use("/instructor", instructorRoutes);
 app.use("/course", courseRoutes);
 app.use("/messages", messageRoutes);
 app.use("/lectures", lectureRoutes);
+app.use("/feedback", feedbackRoutes);
+app.use("/quiz", quizRoutes);
+app.use("/analytics", analyticsRoutes);
 
 app.listen(port, () => {
     console.log(`backend server running on port ${port}`);
