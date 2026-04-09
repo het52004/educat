@@ -291,6 +291,11 @@
   margin: 0 auto;
 }
 
+.instructor-dashboard-container .course-form {
+  display: flex;
+  flex-direction: column;
+}
+
 .instructor-dashboard-container .form-group {
   margin-bottom: 20px;
 }

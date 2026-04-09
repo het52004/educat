@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaPlus, FaTrash, FaArrowLeft, FaCheck } from "react-icons/fa";
+import { FaPlus, FaTrash, FaArrowLeft, FaCheck, FaClipboardList } from "react-icons/fa";
 import useInstructorQuizStore from "../../../store/instructor/useInstructorQuizStore";
 
 const emptyQuestion = () => ({
@@ -7,6 +7,8 @@ const emptyQuestion = () => ({
     options: ["", "", "", ""],
     correctAnswer: "",
 });
+
+const OPTION_LABELS = ["A", "B", "C", "D"];
 
 export default function QuizBuilder({ course, onBack }) {
     const { quiz, loading, fetchQuiz, createQuiz, deleteQuiz } = useInstructorQuizStore();
@@ -26,7 +28,7 @@ export default function QuizBuilder({ course, onBack }) {
             setQuestions(
                 quiz.questions.map((q) => ({
                     questionText: q.questionText,
-                    options: q.options.length === 4 ? q.options : [...q.options, ...Array(4 - q.options.length).fill("")],
+                    options: q.options.length >= 4 ? q.options.slice(0, 4) : [...q.options, ...Array(4 - q.options.length).fill("")],
                     correctAnswer: q.correctAnswer,
                 }))
             );
@@ -45,30 +47,39 @@ export default function QuizBuilder({ course, onBack }) {
         setQuestions((prev) => {
             const updated = [...prev];
             const opts = [...updated[qIdx].options];
+            // If this option was the correct answer and we're changing it, clear correctAnswer
+            const wasCorrect = opts[oIdx] === updated[qIdx].correctAnswer;
             opts[oIdx] = value;
-            updated[qIdx] = { ...updated[qIdx], options: opts };
+            updated[qIdx] = {
+                ...updated[qIdx],
+                options: opts,
+                correctAnswer: wasCorrect ? "" : updated[qIdx].correctAnswer,
+            };
             return updated;
         });
     };
 
-    const addQuestion = () => setQuestions((prev) => [...prev, emptyQuestion()]);
+    const addQuestion = () => {
+        setQuestions((prev) => [...prev, emptyQuestion()]);
+        // Scroll to bottom after render
+        setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }), 100);
+    };
     const removeQuestion = (idx) => setQuestions((prev) => prev.filter((_, i) => i !== idx));
 
     const handleSave = async () => {
+        setMsg({ text: "", type: "" });
         if (!title.trim()) { setMsg({ text: "Please enter a quiz title!", type: "error" }); return; }
         for (let i = 0; i < questions.length; i++) {
             const q = questions[i];
-            if (!q.questionText.trim()) { setMsg({ text: `Question ${i + 1}: Please enter question text.`, type: "error" }); return; }
-            if (q.options.some((o) => !o.trim())) { setMsg({ text: `Question ${i + 1}: All 4 options are required.`, type: "error" }); return; }
-            if (!q.correctAnswer) { setMsg({ text: `Question ${i + 1}: Please select the correct answer.`, type: "error" }); return; }
-            if (!q.options.includes(q.correctAnswer)) { setMsg({ text: `Question ${i + 1}: Correct answer must match one of the options.`, type: "error" }); return; }
+            if (!q.questionText.trim()) { setMsg({ text: `Q${i + 1}: Please enter question text.`, type: "error" }); return; }
+            if (q.options.some((o) => !o.trim())) { setMsg({ text: `Q${i + 1}: All 4 options are required.`, type: "error" }); return; }
+            if (!q.correctAnswer) { setMsg({ text: `Q${i + 1}: Please mark the correct answer.`, type: "error" }); return; }
         }
-
         setSaving(true);
         const res = await createQuiz(course._id, { title, questions, marks: 100 });
         setSaving(false);
         if (res.success) {
-            setMsg({ text: "Quiz saved successfully!", type: "success" });
+            setMsg({ text: quiz ? "Quiz updated successfully!" : "Quiz created successfully!", type: "success" });
         } else {
             setMsg({ text: res.message || "Failed to save quiz.", type: "error" });
         }
@@ -85,120 +96,226 @@ export default function QuizBuilder({ course, onBack }) {
     };
 
     return (
-        <div style={{ fontFamily: "Poppins, sans-serif", maxWidth: "820px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
-                <button onClick={onBack} style={{ background: "none", border: "none", color: "#64748b", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", fontSize: "14px" }}>
-                    <FaArrowLeft /> Back
+        <div style={{ fontFamily: "Poppins, sans-serif", maxWidth: "780px" }}>
+
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "28px", flexWrap: "wrap" }}>
+                <button
+                    onClick={onBack}
+                    style={{
+                        background: "#f1f5f9", border: "none", color: "#475569",
+                        cursor: "pointer", display: "flex", alignItems: "center",
+                        gap: "6px", fontSize: "14px", padding: "8px 14px", borderRadius: "8px",
+                        fontFamily: "inherit", fontWeight: "500",
+                    }}
+                >
+                    <FaArrowLeft size={12} /> Back
                 </button>
                 <div>
-                    <h2 style={{ margin: 0, fontSize: "20px", color: "#1e293b" }}>Quiz Builder</h2>
-                    <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>{course.title}</p>
+                    <h2 style={{ margin: 0, fontSize: "20px", color: "#1e293b", display: "flex", alignItems: "center", gap: "8px" }}>
+                        <FaClipboardList color="#4f46e5" /> Quiz Builder
+                    </h2>
+                    <p style={{ margin: "2px 0 0", fontSize: "13px", color: "#64748b" }}>{course.title}</p>
                 </div>
                 {quiz && (
                     <button
                         onClick={() => setConfirmDelete(true)}
-                        style={{ marginLeft: "auto", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", color: "#ef4444", borderRadius: "8px", padding: "6px 14px", fontSize: "13px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
-                    >
-                        <FaTrash /> Delete Quiz
-                    </button>
+                        style={{
+                            marginLeft: "auto", background: "rgba(239,68,68,0.08)",
+                            border: "1px solid rgba(239,68,68,0.25)", color: "#dc2626",
+                            borderRadius: "8px", padding: "8px 16px", fontSize: "13px",
+                            cursor: "pointer", display: "flex", alignItems: "center",
+                            gap: "6px", fontFamily: "inherit", fontWeight: "500",
+                        }}
+                    ><FaTrash size={11} /> Delete Quiz</button>
                 )}
             </div>
 
+            {/* Delete confirm */}
             {confirmDelete && (
-                <div style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: "10px", padding: "16px", marginBottom: "20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <p style={{ color: "#ef4444", fontSize: "14px", margin: 0 }}>Are you sure? This will delete the quiz and all student results.</p>
+                <div style={{
+                    background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.2)",
+                    borderRadius: "12px", padding: "16px 20px", marginBottom: "20px",
+                    display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px",
+                    flexWrap: "wrap",
+                }}>
+                    <p style={{ color: "#dc2626", fontSize: "14px", margin: 0 }}>
+                        ⚠️ Are you sure? This will delete the quiz and all student results.
+                    </p>
                     <div style={{ display: "flex", gap: "8px" }}>
-                        <button onClick={() => setConfirmDelete(false)} style={{ background: "#f1f5f9", border: "none", borderRadius: "6px", padding: "6px 14px", cursor: "pointer", fontSize: "13px" }}>Cancel</button>
-                        <button onClick={handleDelete} style={{ background: "#ef4444", border: "none", borderRadius: "6px", padding: "6px 14px", color: "white", cursor: "pointer", fontSize: "13px" }}>Yes, Delete</button>
+                        <button
+                            onClick={() => setConfirmDelete(false)}
+                            style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "7px 16px", cursor: "pointer", fontSize: "13px", fontFamily: "inherit" }}
+                        >Cancel</button>
+                        <button
+                            onClick={handleDelete}
+                            style={{ background: "#dc2626", border: "none", borderRadius: "8px", padding: "7px 16px", color: "white", cursor: "pointer", fontSize: "13px", fontFamily: "inherit", fontWeight: "600" }}
+                        >Yes, Delete</button>
                     </div>
                 </div>
             )}
 
+            {/* Status message */}
+            {msg.text && (
+                <div style={{
+                    padding: "12px 16px", borderRadius: "10px", marginBottom: "20px",
+                    background: msg.type === "error" ? "rgba(239,68,68,0.08)" : "rgba(16,185,129,0.08)",
+                    border: `1px solid ${msg.type === "error" ? "rgba(239,68,68,0.2)" : "rgba(16,185,129,0.2)"}`,
+                    color: msg.type === "error" ? "#dc2626" : "#059669",
+                    fontSize: "14px", fontWeight: "500",
+                }}>
+                    {msg.type === "success" ? "✓ " : "✗ "}{msg.text}
+                </div>
+            )}
+
             {/* Quiz title */}
-            <div style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "20px", marginBottom: "20px" }}>
-                <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", display: "block", marginBottom: "8px" }}>Quiz Title</label>
+            <div style={{
+                background: "white", border: "1px solid #e2e8f0",
+                borderRadius: "14px", padding: "22px", marginBottom: "18px",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+            }}>
+                <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", display: "block", marginBottom: "10px" }}>
+                    Quiz Title *
+                </label>
                 <input
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. Final Assessment"
-                    style={{ width: "100%", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "10px 14px", fontSize: "14px", outline: "none", fontFamily: "inherit" }}
+                    placeholder="e.g. Final Assessment Quiz"
+                    style={{
+                        width: "100%", border: "1px solid #e2e8f0", borderRadius: "8px",
+                        padding: "10px 14px", fontSize: "14px", outline: "none",
+                        fontFamily: "inherit", color: "#1e293b", background: "#f8fafc",
+                        transition: "border-color 0.2s",
+                    }}
+                    onFocus={e => e.target.style.borderColor = "#4f46e5"}
+                    onBlur={e => e.target.style.borderColor = "#e2e8f0"}
                 />
             </div>
 
             {/* Questions */}
             {questions.map((q, qIdx) => (
-                <div key={qIdx} style={{ background: "white", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "20px", marginBottom: "16px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-                        <span style={{ fontWeight: "600", color: "#4f46e5", fontSize: "14px" }}>Question {qIdx + 1}</span>
+                <div key={qIdx} style={{
+                    background: "white", border: "1px solid #e2e8f0",
+                    borderRadius: "14px", padding: "22px", marginBottom: "14px",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            <span style={{
+                                background: "#4f46e5", color: "white", borderRadius: "50%",
+                                width: "26px", height: "26px", display: "flex", alignItems: "center",
+                                justifyContent: "center", fontSize: "12px", fontWeight: "700", flexShrink: 0,
+                            }}>{qIdx + 1}</span>
+                            <span style={{ fontWeight: "600", color: "#1e293b", fontSize: "14px" }}>Question {qIdx + 1}</span>
+                        </div>
                         {questions.length > 1 && (
-                            <button onClick={() => removeQuestion(qIdx)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "13px", display: "flex", alignItems: "center", gap: "4px" }}>
-                                <FaTrash /> Remove
-                            </button>
+                            <button
+                                onClick={() => removeQuestion(qIdx)}
+                                style={{
+                                    background: "rgba(239,68,68,0.08)", border: "none",
+                                    color: "#dc2626", cursor: "pointer", fontSize: "12px",
+                                    display: "flex", alignItems: "center", gap: "4px",
+                                    padding: "5px 10px", borderRadius: "6px", fontFamily: "inherit",
+                                }}
+                            ><FaTrash size={10} /> Remove</button>
                         )}
                     </div>
 
-                    <input
+                    <textarea
                         value={q.questionText}
                         onChange={(e) => updateQuestion(qIdx, "questionText", e.target.value)}
-                        placeholder="Enter your question..."
-                        style={{ width: "100%", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "10px 14px", fontSize: "14px", marginBottom: "14px", fontFamily: "inherit" }}
+                        placeholder="Enter your question here..."
+                        rows={2}
+                        style={{
+                            width: "100%", border: "1px solid #e2e8f0", borderRadius: "8px",
+                            padding: "10px 14px", fontSize: "14px", marginBottom: "16px",
+                            fontFamily: "inherit", resize: "vertical", color: "#1e293b",
+                            background: "#f8fafc", lineHeight: "1.5",
+                        }}
                     />
 
-                    <label style={{ fontSize: "12px", fontWeight: "600", color: "#64748b", display: "block", marginBottom: "8px" }}>OPTIONS (click ✓ to mark correct answer)</label>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                        {q.options.map((opt, oIdx) => (
-                            <div key={oIdx} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                                <input
-                                    value={opt}
-                                    onChange={(e) => updateOption(qIdx, oIdx, e.target.value)}
-                                    placeholder={`Option ${oIdx + 1}`}
-                                    style={{
-                                        flex: 1, border: `1px solid ${q.correctAnswer === opt && opt ? "#10b981" : "#e2e8f0"}`,
-                                        borderRadius: "8px", padding: "8px 12px", fontSize: "13px",
-                                        background: q.correctAnswer === opt && opt ? "rgba(16,185,129,0.06)" : "white",
-                                        fontFamily: "inherit",
-                                    }}
-                                />
-                                <button
-                                    onClick={() => opt && updateQuestion(qIdx, "correctAnswer", opt)}
-                                    title="Mark as correct"
-                                    style={{
-                                        width: "30px", height: "30px", borderRadius: "50%", border: "1px solid",
-                                        borderColor: q.correctAnswer === opt && opt ? "#10b981" : "#e2e8f0",
-                                        background: q.correctAnswer === opt && opt ? "#10b981" : "white",
-                                        color: q.correctAnswer === opt && opt ? "white" : "#94a3b8",
-                                        cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px",
-                                        flexShrink: 0,
-                                    }}
-                                ><FaCheck /></button>
-                            </div>
-                        ))}
+                    <p style={{ fontSize: "12px", fontWeight: "600", color: "#64748b", marginBottom: "10px", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                        Options — click ✓ to mark correct answer
+                    </p>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                        {q.options.map((opt, oIdx) => {
+                            const isCorrect = q.correctAnswer === opt && opt.trim();
+                            return (
+                                <div key={oIdx} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                                    <span style={{
+                                        width: "24px", height: "24px", borderRadius: "50%",
+                                        background: "#f1f5f9", color: "#64748b",
+                                        display: "flex", alignItems: "center", justifyContent: "center",
+                                        fontSize: "11px", fontWeight: "700", flexShrink: 0,
+                                    }}>{OPTION_LABELS[oIdx]}</span>
+                                    <input
+                                        value={opt}
+                                        onChange={(e) => updateOption(qIdx, oIdx, e.target.value)}
+                                        placeholder={`Option ${OPTION_LABELS[oIdx]}`}
+                                        style={{
+                                            flex: 1, border: `1.5px solid ${isCorrect ? "#10b981" : "#e2e8f0"}`,
+                                            borderRadius: "8px", padding: "8px 12px", fontSize: "13px",
+                                            background: isCorrect ? "rgba(16,185,129,0.06)" : "#f8fafc",
+                                            fontFamily: "inherit", color: "#1e293b", outline: "none",
+                                            transition: "border-color 0.2s",
+                                        }}
+                                    />
+                                    <button
+                                        onClick={() => opt.trim() && updateQuestion(qIdx, "correctAnswer", opt)}
+                                        title="Mark as correct answer"
+                                        style={{
+                                            width: "32px", height: "32px", borderRadius: "50%",
+                                            border: `2px solid ${isCorrect ? "#10b981" : "#e2e8f0"}`,
+                                            background: isCorrect ? "#10b981" : "white",
+                                            color: isCorrect ? "white" : "#94a3b8",
+                                            cursor: opt.trim() ? "pointer" : "default",
+                                            display: "flex", alignItems: "center", justifyContent: "center",
+                                            fontSize: "11px", flexShrink: 0, transition: "all 0.2s",
+                                        }}
+                                    ><FaCheck /></button>
+                                </div>
+                            );
+                        })}
                     </div>
+
                     {q.correctAnswer && (
-                        <p style={{ fontSize: "12px", color: "#10b981", marginTop: "8px" }}>✓ Correct: {q.correctAnswer}</p>
+                        <p style={{ fontSize: "12px", color: "#10b981", marginTop: "10px", fontWeight: "600" }}>
+                            ✓ Correct answer: {q.correctAnswer}
+                        </p>
                     )}
                 </div>
             ))}
 
-            <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
+            {/* Action buttons */}
+            <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap", marginTop: "8px" }}>
                 <button
                     onClick={addQuestion}
-                    style={{ display: "flex", alignItems: "center", gap: "8px", background: "white", border: "2px dashed #4f46e5", color: "#4f46e5", borderRadius: "10px", padding: "10px 20px", fontSize: "14px", fontWeight: "600", cursor: "pointer", fontFamily: "inherit" }}
+                    style={{
+                        display: "flex", alignItems: "center", gap: "8px",
+                        background: "white", border: "2px dashed #4f46e5",
+                        color: "#4f46e5", borderRadius: "10px", padding: "11px 20px",
+                        fontSize: "14px", fontWeight: "600", cursor: "pointer", fontFamily: "inherit",
+                        transition: "background 0.2s",
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = "#eef2ff"}
+                    onMouseLeave={e => e.currentTarget.style.background = "white"}
                 >
-                    <FaPlus /> Add Question
+                    <FaPlus size={12} /> Add Question
                 </button>
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    style={{ background: "#4f46e5", color: "white", border: "none", borderRadius: "10px", padding: "10px 28px", fontSize: "14px", fontWeight: "600", cursor: "pointer", opacity: saving ? 0.7 : 1, fontFamily: "inherit" }}
+                    style={{
+                        background: saving ? "rgba(79,70,229,0.6)" : "#4f46e5",
+                        color: "white", border: "none", borderRadius: "10px",
+                        padding: "11px 28px", fontSize: "14px", fontWeight: "600",
+                        cursor: saving ? "not-allowed" : "pointer", fontFamily: "inherit",
+                        transition: "background 0.2s",
+                    }}
                 >
-                    {saving ? "Saving..." : quiz ? "Update Quiz" : "Save Quiz"}
+                    {saving ? "Saving..." : quiz ? `Update Quiz (${questions.length} Q)` : `Save Quiz (${questions.length} Q)`}
                 </button>
-                {msg.text && (
-                    <span style={{ fontSize: "13px", color: msg.type === "error" ? "#ef4444" : "#10b981", fontWeight: "500" }}>
-                        {msg.type === "success" ? "✓ " : "✗ "}{msg.text}
-                    </span>
-                )}
             </div>
         </div>
     );

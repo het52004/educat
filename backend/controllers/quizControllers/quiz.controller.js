@@ -79,6 +79,10 @@ export const submitQuiz = async (req, res) => {
             student: req.student._id,
             marks: percentage,
         });
+        // Populate for frontend download use
+        certificate = await Certificate.findById(certificate._id)
+            .populate("course", "title")
+            .populate("student", "fullName");
     }
 
     return res.json({
@@ -102,6 +106,7 @@ export const getCertificate = async (req, res) => {
 export const getMyCertificates = async (req, res) => {
     const certificates = await Certificate.find({ student: req.student._id })
         .populate("course", "title category")
+        .populate("student", "fullName")
         .sort({ createdAt: -1 });
     return res.json({ success: true, certificates });
 };

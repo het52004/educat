@@ -86,7 +86,7 @@ function Messages() {
                             {messages.map((msg) => (
                                 <div
                                     key={msg._id}
-                                    className={`chat-bubble-wrap ${msg.senderId === user?._id || msg.senderRole === "student" && msg.senderName === user?.fullName ? "mine" : "theirs"}`}
+                                    className={`chat-bubble-wrap ${msg.senderRole === "student" ? "mine" : "theirs"}`}
                                 >
                                     <div className="chat-bubble">{msg.text}</div>
                                     <div className="chat-time">

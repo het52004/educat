@@ -19,9 +19,9 @@ router.get("/instructor/:courseId", verifyInstructor, getQuizByCourse);
 router.delete("/:courseId", verifyInstructor, deleteQuiz);
 
 // Student
+router.get("/certificates/mine", verifyStudent, getMyCertificates);
 router.get("/student/:courseId", verifyStudent, getQuizForStudent);
 router.post("/submit/:courseId", verifyStudent, submitQuiz);
 router.get("/certificate/:courseId", verifyStudent, getCertificate);
-router.get("/certificates/mine", verifyStudent, getMyCertificates);
 
 export default router;

@@ -6,7 +6,7 @@
 .analytics-title {
   font-size: 22px;
   font-weight: 700;
-  color: var(--text-dark);
+  color: #1e293b;
   margin-bottom: 24px;
 }
 
@@ -17,30 +17,32 @@
 
 .analytics-section {
   background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
   padding: 24px;
   margin-bottom: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 .analytics-section-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  color: var(--text-dark);
+  color: #1e293b;
   margin-bottom: 20px;
 }
 
 /* Bar chart */
 .analytics-chart {
-  height: 200px;
+  height: 220px;
   display: flex;
   align-items: flex-end;
+  padding: 0 8px;
 }
 
 .chart-bars {
   display: flex;
   align-items: flex-end;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
   height: 100%;
 }
@@ -52,13 +54,12 @@
   gap: 6px;
   flex: 1;
   height: 100%;
-  position: relative;
 }
 
 .chart-bar-tooltip {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-dark);
+  font-weight: 700;
+  color: #4f46e5;
   min-height: 18px;
 }
 
@@ -66,7 +67,7 @@
   flex: 1;
   width: 100%;
   background: #f1f5f9;
-  border-radius: 6px 6px 0 0;
+  border-radius: 8px 8px 0 0;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -74,25 +75,32 @@
 
 .chart-bar-fill {
   width: 100%;
-  background: linear-gradient(180deg, #4f46e5, #7c3aed);
-  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, #6366f1, #4f46e5);
+  border-radius: 8px 8px 0 0;
   min-height: 4px;
-  transition: height 0.6s ease;
+  transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chart-bar-label {
   font-size: 11px;
-  color: var(--text-gray);
+  color: #64748b;
   white-space: nowrap;
+  font-weight: 500;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .analytics-stats {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media (max-width: 800px) {
   .analytics-stats {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 500px) {
   .analytics-stats {
     grid-template-columns: 1fr !important;
   }
