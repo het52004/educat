@@ -20,9 +20,11 @@ export const getMessages = async (req, res) => {
 
 export const sendMessage = async (req, res) => {
     const { conversationId, text, senderRole } = req.body;
+    
     if (!conversationId || !text || !senderRole) return res.json({ success: false, message: "Missing fields!" });
 
     let senderId, senderName;
+    
     if (senderRole === "student") {
         if (!req.student) return res.status(401).json({ success: false, tokenExpired: true, message: "Login again!" });
         senderId = req.student._id;
@@ -34,5 +36,6 @@ export const sendMessage = async (req, res) => {
     }
 
     const message = await Message.create({ conversationId, senderId, senderRole, senderName, text });
+    console.log(message);
     return res.json({ success: true, message });
 };
