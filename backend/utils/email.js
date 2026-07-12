@@ -23,3 +23,18 @@ export const sendEmailToUser = async (to, otp) => {
         return { success: false, message: error.message };
     }
 }
+
+export const sendPasswordResetOtp = async (to, otp) => {
+    const mailOptions = {
+        from: `EduCat ${env.gmail}`,
+        to,
+        subject: "EduCat Password Reset OTP",
+        text: `We received a request to reset your EduCat password. This OTP will expire in 5 minutes! do not share this OTP with anyone!\nOTP:${otp}\n\nIf you did not request this, please ignore this email.`,
+    };
+    try {
+        await transporter.sendMail(mailOptions);
+        return { success: true };
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+}

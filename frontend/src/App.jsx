@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import StudentProtectedRoute from "./routes/StudentProtectedRoute";
 import InstructorProtectedRoute from "./routes/InstructorProtectedRoute";
+import AdminProtectedRoute from "./routes/AdminProtectedRoute";
 
 import RoleSelection from "./pages/RoleSelection";
 import ContactUs from "./pages/ContactUs";
@@ -8,6 +9,7 @@ import ContactUs from "./pages/ContactUs";
 import StudentLogin from "./pages/student/Login";
 import StudentSignup from "./pages/student/Signup";
 import StudentEnterOtp from "./pages/student/EnterOtp";
+import StudentForgotPassword from "./pages/student/ForgotPassword";
 import Dashboard from "./pages/student/dashboard/Dashboard";
 import CourseDetails from "./pages/student/dashboard/CourseDetails";
 import CoursePlayer from "./pages/student/resume-course/CoursePlayer";
@@ -15,9 +17,11 @@ import CoursePlayer from "./pages/student/resume-course/CoursePlayer";
 import InstructorLogin from "./pages/instructor/Login";
 import InstructorSignup from "./pages/instructor/Signup";
 import InstructorEnterOtp from "./pages/instructor/EnterOtp";
+import InstructorForgotPassword from "./pages/instructor/ForgotPassword";
 import InstructorDashboard from "./pages/instructor/dashboard/InstructorDashboard";
 
 import AdminLogin from "./pages/admin/Login";
+import AdminDashboard from "./pages/admin/dashboard/AdminDashboard";
 
 function App() {
   return (
@@ -32,6 +36,7 @@ function App() {
         <Route path="/studentlogin" element={<StudentLogin />} />
         <Route path="/studentsignup" element={<StudentSignup />} />
         <Route path="/enterotp" element={<StudentEnterOtp />} />
+        <Route path="/studentforgotpassword" element={<StudentForgotPassword />} />
 
         {/* Student protected routes */}
         <Route element={<StudentProtectedRoute />}>
@@ -44,6 +49,7 @@ function App() {
         <Route path="/instructorlogin" element={<InstructorLogin />} />
         <Route path="/instructorsignup" element={<InstructorSignup />} />
         <Route path="/instructorenterotp" element={<InstructorEnterOtp />} />
+        <Route path="/instructorforgotpassword" element={<InstructorForgotPassword />} />
 
         {/* Instructor protected routes */}
         <Route element={<InstructorProtectedRoute />}>
@@ -52,6 +58,11 @@ function App() {
 
         {/* Admin routes */}
         <Route path="/adminlogin" element={<AdminLogin />} />
+
+        {/* Admin protected routes */}
+        <Route element={<AdminProtectedRoute />}>
+          <Route path="/admindashboard" element={<AdminDashboard />} />
+        </Route>
 
       </Routes>
     </BrowserRouter>

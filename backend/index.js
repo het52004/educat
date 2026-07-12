@@ -5,6 +5,11 @@ import { env } from "./utils/envValues.js";
 import { connectDB } from "./db/connectDb.js";
 import studentRoutes from "./routes/studentRoutes/auth.route.js";
 import adminRoutes from "./routes/adminRoutes/auth.route.js";
+import adminDashboardRoutes from "./routes/adminRoutes/dashboard.route.js";
+import adminStudentRoutes from "./routes/adminRoutes/students.route.js";
+import adminInstructorRoutes from "./routes/adminRoutes/instructors.route.js";
+import adminCourseRoutes from "./routes/adminRoutes/courses.route.js";
+import adminFeedbackRoutes from "./routes/adminRoutes/feedback.route.js";
 import instructorRoutes from "./routes/instructorRoutes/auth.route.js";
 import courseRoutes from "./routes/courseRoutes/course.route.js";
 import messageRoutes from "./routes/messageRoutes/message.route.js";
@@ -30,6 +35,11 @@ app.get("/", (req, res) => {
 
 app.use("/student", studentRoutes);
 app.use("/admin", adminRoutes);
+app.use("/admin", adminDashboardRoutes);
+app.use("/admin", adminStudentRoutes);
+app.use("/admin", adminInstructorRoutes);
+app.use("/admin", adminCourseRoutes);
+app.use("/admin", adminFeedbackRoutes);
 app.use("/instructor", instructorRoutes);
 app.use("/course", courseRoutes);
 app.use("/messages", messageRoutes);

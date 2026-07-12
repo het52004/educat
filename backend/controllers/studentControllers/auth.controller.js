@@ -1,6 +1,6 @@
 import TempStudent from "../../models/student/TempStudent.model.js";
 import Student from "../../models/student/Student.model.js";
-import { sendEmailToUser } from "../../utils/email.js";
+import { sendEmailToUser, sendPasswordResetOtp } from "../../utils/email.js";
 import jwt from "jsonwebtoken";
 import { env } from "../../utils/envValues.js";
 
@@ -75,4 +75,48 @@ export const checkAuth = async (req, res) => {
 export const studentLogout = (req, res) => {
     res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "lax" });
     return res.json({ success: true, message: "Logged out successfully!" });
+};
+
+export const requestStudentPasswordResetOtp = async (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.json({ success: false, message: "Email is required!" });
+
+    const student = await Student.findOne({ email });
+    // Do not reveal whether the account exists to prevent user enumeration
+    if (!student) return res.json({ success: true, message: `If an account exists for ${email}, an OTP has been sent.` });
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const result = await sendPasswordResetOtp(email, otp);
+    if (!result.success) return res.json({ success: false, message: "Failed to send email! Please try again." });
+
+    student.resetPasswordOtp = otp;
+    student.resetPasswordOtpExpires = new Date(Date.now() + 5 * 60 * 1000);
+    await student.save();
+
+    return res.json({ success: true, message: `If an account exists for ${email}, an OTP has been sent.` });
+};
+
+export const resetStudentPassword = async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) return res.json({ success: false, message: "Fill all the details!" });
+    if (newPassword.length < 6) return res.json({ success: false, message: "Password must be at least 6 characters" });
+
+    const student = await Student.findOne({ email });
+    if (!student || !student.resetPasswordOtp) return res.json({ success: false, message: "Please request a new OTP" });
+
+    if (student.resetPasswordOtpExpires < new Date()) {
+        student.resetPasswordOtp = null;
+        student.resetPasswordOtpExpires = null;
+        await student.save();
+        return res.json({ success: false, message: "OTP has expired! Please request a new one" });
+    }
+
+    if (student.resetPasswordOtp !== otp) return res.json({ success: false, message: "OTP does not match! Try again" });
+
+    student.password = newPassword;
+    student.resetPasswordOtp = null;
+    student.resetPasswordOtpExpires = null;
+    await student.save();
+
+    return res.json({ success: true, message: "Password reset successfully! Please login with your new password" });
 };

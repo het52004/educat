@@ -1,19 +1,19 @@
 import { create } from "zustand";
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:5000/admin",
-  withCredentials: true,
-});
+import adminApi from "../../api/adminApi";
 
 export const useAdminAuthStore = create((set) => ({
   admin: null,
   loginError: null,
 
+  forceLogout: () => {
+    set({ admin: null });
+    window.location.href = "/adminlogin";
+  },
+
   login: async (data) => {
     try {
       set({ loginError: "" });
-      const res = await api.post("/adminLogin", {
+      const res = await adminApi.post("/admin/adminLogin", {
         email: data.email,
         password: data.password,
       });
@@ -32,7 +32,7 @@ export const useAdminAuthStore = create((set) => ({
 
   checkAuth: async () => {
     try {
-      const res = await api.get("/checkAuth");
+      const res = await adminApi.get("/admin/checkAuth");
       if (!res.data.success) {
         set({ admin: null });
         return false;
@@ -48,7 +48,7 @@ export const useAdminAuthStore = create((set) => ({
 
   logout: async () => {
     try {
-      const res = await api.get("/adminLogout");
+      const res = await adminApi.get("/admin/adminLogout");
       if (res.data.success) {
         set({ admin: null });
         return true;

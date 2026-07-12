@@ -62,6 +62,10 @@ function Login() {
             />
           </div>
 
+          <div className="link">
+            <Link to="/instructorforgotpassword">Forgot password?</Link>
+          </div>
+
           <div className="button" onClick={handleSubmit}>
             <input type="submit" className="btn" value="Sign In" />
           </div>

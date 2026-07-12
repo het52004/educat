@@ -22,6 +22,14 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    resetPasswordOtp: {
+        type: String,
+        default: null,
+    },
+    resetPasswordOtpExpires: {
+        type: Date,
+        default: null,
+    },
 }, { timestamps: true });
 
 studentSchema.pre("save", async function (next) {

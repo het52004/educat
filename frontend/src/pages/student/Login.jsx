@@ -62,7 +62,7 @@ function Login() {
           </div>
 
           <div className="link">
-            <Link to="/forgotpassword">Forgot password?</Link>
+            <Link to="/studentforgotpassword">Forgot password?</Link>
           </div>
 
           <div className="button" onClick={handleSubmit}>

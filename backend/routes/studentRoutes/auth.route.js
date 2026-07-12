@@ -5,6 +5,8 @@ import {
   requestStudentOtp,
   signup,
   checkAuth,
+  requestStudentPasswordResetOtp,
+  resetStudentPassword,
 } from "../../controllers/studentControllers/auth.controller.js";
 import { updateProfile, deleteAccount } from "../../controllers/studentControllers/profile.controller.js";
 import { enrollCourse, isEnrolled } from "../../controllers/studentControllers/enroll.controller.js";
@@ -15,6 +17,8 @@ const router = express.Router();
 router.post("/studentLogin", studentLogin);
 router.post("/signup", signup);
 router.post("/requestStudentOtp", requestStudentOtp);
+router.post("/requestPasswordResetOtp", requestStudentPasswordResetOtp);
+router.post("/resetPassword", resetStudentPassword);
 
 router.get("/checkAuth", verifyStudent, checkAuth);
 router.get("/studentLogout", verifyStudent, studentLogout);

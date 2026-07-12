@@ -30,6 +30,14 @@ const instructorSchema = new mongoose.Schema(
         ref: "Course",
       },
     ],
+    resetPasswordOtp: {
+      type: String,
+      default: null,
+    },
+    resetPasswordOtpExpires: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true },
 );

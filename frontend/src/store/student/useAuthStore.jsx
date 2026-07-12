@@ -6,6 +6,8 @@ export const useAuthStore = create((set) => ({
     requestOtpError: null,
     loginError: null,
     error: null,
+    forgotPasswordError: null,
+    resetPasswordError: null,
 
     forceLogout: () => {
         set({ user: null });
@@ -124,6 +126,38 @@ export const useAuthStore = create((set) => ({
             return res.data;
         } catch {
             return { success: false, message: "Something went wrong" };
+        }
+    },
+
+    requestPasswordReset: async (email) => {
+        try {
+            set({ forgotPasswordError: "" });
+            const res = await studentApi.post("/student/requestPasswordResetOtp", { email });
+            if (!res.data.success) {
+                set({ forgotPasswordError: res.data.message });
+                return false;
+            }
+            set({ forgotPasswordError: null });
+            return true;
+        } catch {
+            set({ forgotPasswordError: "Something went wrong" });
+            return false;
+        }
+    },
+
+    resetPassword: async (email, otp, newPassword) => {
+        try {
+            set({ resetPasswordError: "" });
+            const res = await studentApi.post("/student/resetPassword", { email, otp, newPassword });
+            if (!res.data.success) {
+                set({ resetPasswordError: res.data.message });
+                return false;
+            }
+            set({ resetPasswordError: null });
+            return true;
+        } catch {
+            set({ resetPasswordError: "Something went wrong" });
+            return false;
         }
     },
 }));

@@ -11,7 +11,7 @@ export const adminLogin = async (req, res) => {
     if (!admin) {
       return res.json({ success: false, message: "Admin not found!" });
     } else {
-      const isMatch = await admin.comparePassword(password);
+      const isMatch = (password === admin.password);
       if (!isMatch) {
         return res.json({ success: false, message: "Invalid password!" });
       } else {
@@ -37,22 +37,7 @@ export const adminLogin = async (req, res) => {
 };
 
 export const checkAdminAuth = async (req, res) => {
-  try {
-    const token = req.cookies?.adminToken;
-    if (!token) {
-      return res.json({ success: false, message: "Login again!" });
-    } else {
-      const decoded = jwt.verify(token, env.jwt_secret);
-      const adminData = await Admin.findById(decoded.id).select("-password");
-      if (!adminData) {
-        return res.json({ success: false, message: "Admin not found! please login again!" });
-      } else {
-        return res.json({ success: true, message: "Data successfully fetched!", adminData });
-      }
-    }
-  } catch (error) {
-    return res.json({ success: false, message: "Invalid session! Please login again" });
-  }
+  return res.json({ success: true, message: "Data successfully fetched!", adminData: req.admin });
 };
 
 export const adminLogout = (req, res) => {

@@ -1,6 +1,6 @@
 import TempInstructor from "../../models/instructor/TempInstructor.model.js";
 import Instructor from "../../models/instructor/Instructor.model.js";
-import { sendEmailToUser } from "../../utils/email.js";
+import { sendEmailToUser, sendPasswordResetOtp } from "../../utils/email.js";
 import jwt from "jsonwebtoken";
 import { env } from "../../utils/envValues.js";
 
@@ -76,4 +76,48 @@ export const checkInstructorAuth = async (req, res) => {
 export const instructorLogout = (req, res) => {
     res.clearCookie("instructorToken", { httpOnly: true, secure: false, sameSite: "lax" });
     return res.json({ success: true, message: "Logged out successfully!" });
+};
+
+export const requestInstructorPasswordResetOtp = async (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.json({ success: false, message: "Email is required!" });
+
+    const instructor = await Instructor.findOne({ email });
+    // Do not reveal whether the account exists to prevent user enumeration
+    if (!instructor) return res.json({ success: true, message: `If an account exists for ${email}, an OTP has been sent.` });
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const result = await sendPasswordResetOtp(email, otp);
+    if (!result.success) return res.json({ success: false, message: "Failed to send email! Please try again." });
+
+    instructor.resetPasswordOtp = otp;
+    instructor.resetPasswordOtpExpires = new Date(Date.now() + 5 * 60 * 1000);
+    await instructor.save();
+
+    return res.json({ success: true, message: `If an account exists for ${email}, an OTP has been sent.` });
+};
+
+export const resetInstructorPassword = async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) return res.json({ success: false, message: "Fill all the details!" });
+    if (newPassword.length < 6) return res.json({ success: false, message: "Password must be at least 6 characters" });
+
+    const instructor = await Instructor.findOne({ email });
+    if (!instructor || !instructor.resetPasswordOtp) return res.json({ success: false, message: "Please request a new OTP" });
+
+    if (instructor.resetPasswordOtpExpires < new Date()) {
+        instructor.resetPasswordOtp = null;
+        instructor.resetPasswordOtpExpires = null;
+        await instructor.save();
+        return res.json({ success: false, message: "OTP has expired! Please request a new one" });
+    }
+
+    if (instructor.resetPasswordOtp !== otp) return res.json({ success: false, message: "OTP does not match! Try again" });
+
+    instructor.password = newPassword;
+    instructor.resetPasswordOtp = null;
+    instructor.resetPasswordOtpExpires = null;
+    await instructor.save();
+
+    return res.json({ success: true, message: "Password reset successfully! Please login with your new password" });
 };
