@@ -72,17 +72,17 @@ function ManageCourses() {
                                     : "N/A";
                                 return (
                                     <tr key={c._id}>
-                                        <td className="fw-bold">{c.title}</td>
-                                        <td>{c.addedBy?.name || "Unknown"}</td>
-                                        <td>{c.category}</td>
-                                        <td>₹{c.price}</td>
-                                        <td>{avgRating}{avgRating !== "N/A" ? ` (${c.ratings.length})` : ""}</td>
-                                        <td>
+                                        <td data-label="Title" className="fw-bold">{c.title}</td>
+                                        <td data-label="Instructor">{c.addedBy?.name || "Unknown"}</td>
+                                        <td data-label="Category">{c.category}</td>
+                                        <td data-label="Price">₹{c.price}</td>
+                                        <td data-label="Rating">{avgRating}{avgRating !== "N/A" ? ` (${c.ratings.length})` : ""}</td>
+                                        <td data-label="Status">
                                             <span className={`status-badge ${c.isPublished ? "active" : "draft"}`}>
                                                 {c.isPublished ? "Published" : "Draft"}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Actions" className="cell-actions">
                                             <div className="action-buttons">
                                                 <button
                                                     className={`btn-icon ${c.isPublished ? "unpublish" : "publish"}`}

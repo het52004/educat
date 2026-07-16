@@ -18,29 +18,59 @@ function ForgotPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmError, setConfirmError] = useState("");
   const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleRequestOtp = async (e) => {
     e.preventDefault();
+    if (submitting) return;
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) return;
+
     setMessage("");
-    const success = await requestPasswordReset(email);
+    setSubmitting(true);
+    const success = await requestPasswordReset(trimmedEmail);
+    setSubmitting(false);
     if (success) {
-      setMessage(`If an account exists for ${email}, an OTP has been sent.`);
+      setEmail(trimmedEmail);
+      setMessage(`If an account exists for ${trimmedEmail}, an OTP has been sent.`);
       setStep(2);
     }
   };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
+    if (submitting) return;
     setConfirmError("");
+
+    if (!otp.trim()) {
+      setConfirmError("Please enter the OTP sent to your email.");
+      return;
+    }
+    if (newPassword.length < 6) {
+      setConfirmError("Password must be at least 6 characters.");
+      return;
+    }
     if (newPassword !== confirmPassword) {
       setConfirmError("Passwords do not match!");
       return;
     }
-    const success = await resetPassword(email, otp, newPassword);
+
+    setSubmitting(true);
+    const success = await resetPassword(email, otp.trim(), newPassword);
+    setSubmitting(false);
     if (success) {
       alert("Password reset successfully! Please login with your new password");
       navigate("/instructorlogin");
     }
+  };
+
+  const handleResendOtp = () => {
+    setStep(1);
+    setOtp("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setConfirmError("");
+    setMessage("");
   };
 
   return (
@@ -99,8 +129,21 @@ function ForgotPassword() {
             </div>
           )}
 
-          <div className="button" onClick={step === 1 ? handleRequestOtp : handleResetPassword}>
-            <input type="submit" className="btn" value={step === 1 ? "Send OTP" : "Reset Password"} />
+          <div
+            className="button"
+            onClick={step === 1 ? handleRequestOtp : handleResetPassword}
+            style={submitting ? { opacity: 0.7, pointerEvents: "none" } : undefined}
+          >
+            <input
+              type="submit"
+              className="btn"
+              disabled={submitting}
+              value={
+                submitting
+                  ? (step === 1 ? "Sending..." : "Resetting...")
+                  : (step === 1 ? "Send OTP" : "Reset Password")
+              }
+            />
           </div>
 
           {message && <div className="success" style={{ color: "green", textAlign: "center", marginTop: "10px" }}>{message}</div>}
@@ -110,7 +153,7 @@ function ForgotPassword() {
 
           {step === 2 && (
             <div className="link">
-              <a onClick={() => setStep(1)} style={{ cursor: "pointer" }}>Resend OTP</a>
+              <a onClick={handleResendOtp} style={{ cursor: "pointer" }}>Entered wrong email? Start over</a>
             </div>
           )}
 

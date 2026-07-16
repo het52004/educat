@@ -59,12 +59,12 @@ function ManageStudents() {
                         <tbody>
                             {filtered.map((s) => (
                                 <tr key={s._id}>
-                                    <td className="fw-bold">{s.fullName}</td>
-                                    <td>{s.email}</td>
-                                    <td>{s.contactNumber}</td>
-                                    <td>{s.enrolledCourses?.length || 0}</td>
-                                    <td>{new Date(s.createdAt).toLocaleDateString()}</td>
-                                    <td>
+                                    <td data-label="Name" className="fw-bold">{s.fullName}</td>
+                                    <td data-label="Email">{s.email}</td>
+                                    <td data-label="Contact">{s.contactNumber}</td>
+                                    <td data-label="Enrolled Courses">{s.enrolledCourses?.length || 0}</td>
+                                    <td data-label="Joined">{new Date(s.createdAt).toLocaleDateString()}</td>
+                                    <td data-label="Actions" className="cell-actions">
                                         <div className="action-buttons">
                                             <button className="btn-icon delete" title="Delete student" onClick={() => handleDelete(s)}>
                                                 <FaTrash />

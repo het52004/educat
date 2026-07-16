@@ -128,8 +128,7 @@ export default function CourseDetails() {
                             <div className="course-includes">
                                 <p>This course includes:</p>
                                 <ul>
-                                    {course.duration && <li>📺 {course.duration} on-demand video</li>}
-                                    {course.lectures > 0 && <li>📄 {course.lectures} lectures</li>}
+                                    <li>🎥 {course.lectureCount || 0} video lecture{course.lectureCount === 1 ? "" : "s"}</li>
                                     <li>📱 Access on mobile and desktop</li>
                                     <li>🏆 Certificate of completion</li>
                                 </ul>
@@ -164,8 +163,7 @@ export default function CourseDetails() {
                         </div>
 
                         <div className="modal-includes">
-                            {course.duration && <span>📺 {course.duration} video</span>}
-                            {course.lectures > 0 && <span>📄 {course.lectures} lectures</span>}
+                            <span>🎥 {course.lectureCount || 0} video lecture{course.lectureCount === 1 ? "" : "s"}</span>
                             <span>🏆 Certificate</span>
                             <span>♾️ Full lifetime access</span>
                         </div>

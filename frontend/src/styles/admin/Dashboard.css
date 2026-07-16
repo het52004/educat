@@ -523,4 +523,137 @@
   .admin-dashboard-container .panel-grid {
     grid-template-columns: 1fr;
   }
+
+  .admin-dashboard-container .content-area {
+    padding: 20px 16px;
+  }
+
+  .admin-dashboard-container .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .admin-dashboard-container .stat-card {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .admin-dashboard-container .stat-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+  }
+
+  .admin-dashboard-container .stat-info h3 {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 520px) {
+  .admin-dashboard-container .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-dashboard-container .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-dashboard-container .search-input,
+  .admin-dashboard-container .btn-outline {
+    width: 100%;
+  }
+
+  .admin-dashboard-container .panel {
+    padding: 18px;
+  }
+
+  .admin-dashboard-container .trend-bars {
+    height: 130px;
+  }
+
+  .admin-dashboard-container .trend-bar-stack {
+    height: 95px;
+  }
+}
+
+/* Below 700px, tables collapse into stacked cards instead of relying on
+   horizontal scrolling, since 5-6 column tables are unusable on phones. */
+@media (max-width: 700px) {
+  .admin-dashboard-container .table-container {
+    overflow-x: visible;
+    box-shadow: none;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .admin-dashboard-container table,
+  .admin-dashboard-container thead,
+  .admin-dashboard-container tbody,
+  .admin-dashboard-container th,
+  .admin-dashboard-container td,
+  .admin-dashboard-container tr {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-dashboard-container thead {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .admin-dashboard-container tbody tr {
+    background: var(--bg-white);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    padding: 6px 16px;
+  }
+
+  .admin-dashboard-container td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    text-align: right;
+    white-space: normal;
+    word-break: break-word;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 12px 0;
+  }
+
+  .admin-dashboard-container tr td:last-child {
+    border-bottom: none;
+  }
+
+  .admin-dashboard-container td::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-gray);
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  .admin-dashboard-container td.cell-actions {
+    justify-content: flex-start;
+  }
+
+  .admin-dashboard-container td.cell-actions::before {
+    content: none;
+  }
+
+  .admin-dashboard-container .action-buttons {
+    justify-content: flex-end;
+    flex: 1;
+  }
+
+  .admin-dashboard-container .feedback-desc {
+    max-width: 100%;
+    white-space: normal;
+    text-align: right;
+  }
 }
