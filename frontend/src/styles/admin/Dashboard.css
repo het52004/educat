@@ -44,15 +44,30 @@
   background: var(--bg-body);
 }
 
-.admin-dashboard-container .brand-desktop h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: 40px;
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: -5%;
 }
 
-.admin-dashboard-container .brand-desktop span {
-  color: var(--accent);
+.logo-symbol {
+  width: 30%;
+}
+
+.logo-name {
+  width: 70%;
+}
+
+.logo-symbol img {
+  width: 50px;
+  border-color: #111827;
+  border-radius: 20%;
+}
+
+.logo-name img {
+  width: 100px;
 }
 
 .admin-dashboard-container .nav-menu {

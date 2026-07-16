@@ -12,8 +12,13 @@ function Sidebar({ activeTab, isSidebarOpen, onSwitch, onToggle, onLogout }) {
             </div>
 
             <aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
-                <div className="brand-desktop">
-                    <h2>EduCat<span>.</span></h2>
+                <div className="brand">
+                    <div className="logo-symbol">
+                        <img src="/assets/images/EduCat (4).png" alt="logo-symbol" />
+                    </div>
+                    <div className="logo-name">
+                        <img src="/assets/images/EduCat (3).png" alt="logo-name" />
+                    </div>
                 </div>
 
                 <nav className="nav-menu">
