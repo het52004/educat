@@ -8,6 +8,7 @@ import {
   requestInstructorPasswordResetOtp,
   resetInstructorPassword,
 } from "../../controllers/instructorControllers/auth.controller.js";
+import { updateInstructorProfile } from "../../controllers/instructorControllers/profile.controller.js";
 import verifyInstructor from "../../middleware/verifyInstructor.js";
 
 const router = express.Router();
@@ -20,5 +21,6 @@ router.post("/resetPassword", resetInstructorPassword);
 
 router.get("/checkAuth", verifyInstructor, checkInstructorAuth);
 router.get("/instructorLogout", verifyInstructor, instructorLogout);
+router.put("/updateProfile", verifyInstructor, updateInstructorProfile);
 
 export default router;
