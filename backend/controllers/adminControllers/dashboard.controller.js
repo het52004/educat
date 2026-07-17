@@ -19,8 +19,12 @@ export const getAdminStats = async (req, res) => {
       { $unwind: "$enrolledCourses" },
       { $group: { _id: "$enrolledCourses", count: { $sum: 1 } } },
     ]);
+    // Only count enrollments for courses that still exist (exclude deleted courses)
+    const existingCourseIds = new Set(courses.map((c) => String(c._id)));
+    const validEnrollmentCounts = enrollmentCounts.filter((e) => existingCourseIds.has(String(e._id)));
+
     const enrollmentMap = {};
-    enrollmentCounts.forEach((e) => { enrollmentMap[String(e._id)] = e.count; });
+    validEnrollmentCounts.forEach((e) => { enrollmentMap[String(e._id)] = e.count; });
 
     let totalRevenue = 0;
     let totalRatingsSum = 0;
@@ -36,7 +40,7 @@ export const getAdminStats = async (req, res) => {
     });
 
     const avgRating = totalRatingsCount > 0 ? (totalRatingsSum / totalRatingsCount).toFixed(1) : "N/A";
-    const totalEnrollments = enrollmentCounts.reduce((acc, e) => acc + e.count, 0);
+    const totalEnrollments = validEnrollmentCounts.reduce((acc, e) => acc + e.count, 0);
 
     // Signups over last 6 months (students + instructors)
     const now = new Date();

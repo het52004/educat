@@ -148,6 +148,16 @@ export const useInstructorAuthStore = create((set) => ({
         }
     },
 
+    updateProfile: async (data) => {
+        try {
+            const res = await instructorApi.put("/instructor/updateProfile", data);
+            if (res.data.success) set({ instructor: res.data.instructorData });
+            return res.data;
+        } catch {
+            return { success: false, message: "Something went wrong" };
+        }
+    },
+
     requestPasswordReset: async (email) => {
         try {
             set({ forgotPasswordError: "" });
