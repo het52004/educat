@@ -52,7 +52,7 @@ function DashboardHome({ courses, instructor, onNewCourse, onEdit, onDelete, onM
                                     <td className="fw-bold">{course.title}</td>
                                     <td>{course.category}</td>
                                     <td>${course.price}</td>
-                                    <td>{course.lectures || 0}</td>
+                                    <td>{course.lectureCount ?? 0}</td>
                                     <td>
                                         <div className="action-buttons">
                                             <button className="btn-icon" style={{ color: "#4f46e5" }} onClick={() => onManageLectures(course)} title="Manage Lectures">

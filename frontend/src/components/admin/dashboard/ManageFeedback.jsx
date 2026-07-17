@@ -72,12 +72,12 @@ function ManageFeedback() {
                         <tbody>
                             {filtered.map((f) => (
                                 <tr key={f._id}>
-                                    <td className="fw-bold">{f.course?.title || "Deleted course"}</td>
-                                    <td>{f.addedBy?.fullName || "Deleted user"}</td>
-                                    <td><Stars rating={f.rating} /></td>
-                                    <td className="feedback-desc" title={f.description}>{f.description}</td>
-                                    <td>{new Date(f.createdAt).toLocaleDateString()}</td>
-                                    <td>
+                                    <td data-label="Course" className="fw-bold">{f.course?.title || "Deleted course"}</td>
+                                    <td data-label="Student">{f.addedBy?.fullName || "Deleted user"}</td>
+                                    <td data-label="Rating"><Stars rating={f.rating} /></td>
+                                    <td data-label="Review" className="feedback-desc" title={f.description}>{f.description}</td>
+                                    <td data-label="Date">{new Date(f.createdAt).toLocaleDateString()}</td>
+                                    <td data-label="Actions" className="cell-actions">
                                         <div className="action-buttons">
                                             <button className="btn-icon delete" title="Delete review" onClick={() => handleDelete(f)}>
                                                 <FaTrash />

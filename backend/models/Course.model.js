@@ -22,14 +22,6 @@ const courseSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    duration: {
-        type: String,
-        default: "",
-    },
-    lectures: {
-        type: Number,
-        default: 0,
-    },
     isPublished: {
         type: Boolean,
         default: false,

@@ -122,7 +122,10 @@ function InstructorDashboard() {
                     {activeTab === "manage-lectures" && managingCourse && (
                         <ManageLectures
                             course={managingCourse}
-                            onBack={() => switchTab("dashboard")}
+                            onBack={() => {
+                                fetchInstructorCourses();
+                                switchTab("dashboard");
+                            }}
                         />
                     )}
                     {activeTab === "quiz-builder" && quizCourse && (

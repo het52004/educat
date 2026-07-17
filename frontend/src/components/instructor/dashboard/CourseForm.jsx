@@ -3,7 +3,7 @@ import "../../../styles/instructor/Dashboard.css";
 
 const CATEGORIES = ["Web Development", "Data Science", "Design", "AI / ML", "Photography", "Finance", "Other"];
 
-const emptyForm = { title: "", description: "", price: "", category: "Web Development", thumbnail: "", duration: "", lectures: "" };
+const emptyForm = { title: "", description: "", price: "", category: "Web Development", thumbnail: "" };
 
 function CourseForm({ editingCourse, onSubmit, onCancel }) {
     const [formData, setFormData] = useState(
@@ -14,8 +14,6 @@ function CourseForm({ editingCourse, onSubmit, onCancel }) {
                 price: editingCourse.price,
                 category: editingCourse.category,
                 thumbnail: editingCourse.thumbnail || "",
-                duration: editingCourse.duration || "",
-                lectures: editingCourse.lectures || "",
             }
             : emptyForm
     );
@@ -62,21 +60,14 @@ function CourseForm({ editingCourse, onSubmit, onCancel }) {
                     </div>
                 </div>
 
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>Duration (e.g. 4.5 hours)</label>
-                        <input type="text" name="duration" placeholder="4.5 hours" value={formData.duration} onChange={handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <label>Number of Lectures</label>
-                        <input type="number" name="lectures" placeholder="12" value={formData.lectures} onChange={handleChange} />
-                    </div>
-                </div>
-
                 <div className="form-group">
                     <label>Thumbnail URL</label>
                     <input type="text" name="thumbnail" placeholder="https://..." value={formData.thumbnail} onChange={handleChange} />
                 </div>
+
+                <p style={{ fontSize: "13px", color: "var(--text-gray)", marginTop: "-6px", marginBottom: "16px" }}>
+                    Note: the number of lectures shown to students is calculated automatically from the videos you upload — it isn't set here.
+                </p>
 
                 <div className="form-group">
                     <label>Description</label>

@@ -64,12 +64,12 @@ function ManageInstructors() {
                         <tbody>
                             {filtered.map((i) => (
                                 <tr key={i._id}>
-                                    <td className="fw-bold">{i.name}</td>
-                                    <td>{i.email}</td>
-                                    <td>{i.expertise?.length ? i.expertise.join(", ") : "—"}</td>
-                                    <td>{i.courses?.length || 0}</td>
-                                    <td>{new Date(i.createdAt).toLocaleDateString()}</td>
-                                    <td>
+                                    <td data-label="Name" className="fw-bold">{i.name}</td>
+                                    <td data-label="Email">{i.email}</td>
+                                    <td data-label="Expertise">{i.expertise?.length ? i.expertise.join(", ") : "—"}</td>
+                                    <td data-label="Courses">{i.courses?.length || 0}</td>
+                                    <td data-label="Joined">{new Date(i.createdAt).toLocaleDateString()}</td>
+                                    <td data-label="Actions" className="cell-actions">
                                         <div className="action-buttons">
                                             <button className="btn-icon delete" title="Delete instructor" onClick={() => handleDelete(i)}>
                                                 <FaTrash />
