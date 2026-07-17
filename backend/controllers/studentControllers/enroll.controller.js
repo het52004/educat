@@ -10,7 +10,10 @@ export const enrollCourse = async (req, res) => {
     const alreadyEnrolled = req.student.enrolledCourses.map(String).includes(String(courseId));
     if (alreadyEnrolled) return res.json({ success: false, message: "Already enrolled in this course!" });
 
-    await Student.findByIdAndUpdate(req.student._id, { $push: { enrolledCourses: courseId } });
+    // $addToSet is atomic and only adds the id if it isn't already present, so
+    // duplicate enrollments can't be created even from a double-click or a
+    // retried request racing the check above.
+    await Student.findByIdAndUpdate(req.student._id, { $addToSet: { enrolledCourses: courseId } });
     const updatedStudent = await Student.findById(req.student._id).select("-password");
     return res.json({ success: true, message: "Enrolled successfully!", studentData: updatedStudent });
 };

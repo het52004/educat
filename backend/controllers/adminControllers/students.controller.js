@@ -4,7 +4,25 @@ import Course from "../../models/Course.model.js";
 
 export const getAllStudents = async (req, res) => {
   const students = await Student.find().select("-password -resetPasswordOtp -resetPasswordOtpExpires").sort({ createdAt: -1 });
-  return res.json({ success: true, students });
+
+  // enrolledCourses can contain stale duplicates or ids of since-deleted courses
+  // (e.g. from legacy data). Compute the true, de-duplicated, still-existing
+  // enrollment count here so the admin table can't misreport it, regardless of
+  // what's actually sitting in the array on the document.
+  const existingCourseIds = new Set((await Course.find({}, "_id")).map((c) => String(c._id)));
+
+  const studentsWithCounts = students.map((s) => {
+    const obj = s.toObject();
+    const uniqueValidIds = new Set(
+      (obj.enrolledCourses || [])
+        .map(String)
+        .filter((id) => existingCourseIds.has(id))
+    );
+    obj.enrolledCount = uniqueValidIds.size;
+    return obj;
+  });
+
+  return res.json({ success: true, students: studentsWithCounts });
 };
 
 export const getStudentById = async (req, res) => {
