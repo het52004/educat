@@ -20,3 +20,17 @@ export const isEnrolled = async (req, res) => {
     const enrolled = req.student.enrolledCourses.map(String).includes(String(courseId));
     return res.json({ success: true, enrolled });
 };
+
+export const unenrollCourse = async (req, res) => {
+    const { courseId } = req.params;
+
+    const isEnrolled = req.student.enrolledCourses.map(String).includes(String(courseId));
+    if (!isEnrolled) return res.json({ success: false, message: "You are not enrolled in this course!" });
+
+    // Only removes the course from the student's enrolled list. Certificates
+    // already earned and reviews already left for this course are deliberately
+    // left untouched — unenrolling shouldn't erase what the student already earned.
+    await Student.findByIdAndUpdate(req.student._id, { $pull: { enrolledCourses: courseId } });
+    const updatedStudent = await Student.findById(req.student._id).select("-password");
+    return res.json({ success: true, message: "Unenrolled successfully!", studentData: updatedStudent });
+};

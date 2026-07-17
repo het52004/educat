@@ -1,6 +1,8 @@
 import Course from "../../models/Course.model.js";
 import Instructor from "../../models/instructor/Instructor.model.js";
 import Lecture from "../../models/Lecture.model.js";
+import Feedback from "../../models/Feedback.model.js";
+import Student from "../../models/student/Student.model.js";
 
 // Attaches the real, live lecture count to a single course object (plain object, not a mongoose doc)
 const withLectureCount = async (course) => {
@@ -49,6 +51,13 @@ export const deleteCourse = async (req, res) => {
     const { courseId } = req.params;
     const course = await Course.findOne({ _id: courseId, addedBy: req.instructor._id });
     if (!course) return res.json({ success: false, message: "Course not found!" });
+
+    // Clean up everything tied to this course. Certificates are intentionally
+    // left alone (they snapshot their own course title/category) so students
+    // keep proof of what they already earned even after the course is gone.
+    await Lecture.deleteMany({ courseId });
+    await Feedback.deleteMany({ course: courseId });
+    await Student.updateMany({ enrolledCourses: courseId }, { $pull: { enrolledCourses: courseId } });
 
     await Course.deleteOne({ _id: courseId });
     await Instructor.findByIdAndUpdate(req.instructor._id, { $pull: { courses: course._id } });

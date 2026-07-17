@@ -9,7 +9,7 @@ import {
   resetStudentPassword,
 } from "../../controllers/studentControllers/auth.controller.js";
 import { updateProfile, deleteAccount } from "../../controllers/studentControllers/profile.controller.js";
-import { enrollCourse, isEnrolled } from "../../controllers/studentControllers/enroll.controller.js";
+import { enrollCourse, isEnrolled, unenrollCourse } from "../../controllers/studentControllers/enroll.controller.js";
 import verifyStudent from "../../middleware/verifyStudent.js";
 
 const router = express.Router();
@@ -25,6 +25,7 @@ router.get("/studentLogout", verifyStudent, studentLogout);
 router.put("/updateProfile", verifyStudent, updateProfile);
 router.delete("/deleteAccount", verifyStudent, deleteAccount);
 router.post("/enroll/:courseId", verifyStudent, enrollCourse);
+router.post("/unenroll/:courseId", verifyStudent, unenrollCourse);
 router.get("/isEnrolled/:courseId", verifyStudent, isEnrolled);
 
 export default router;

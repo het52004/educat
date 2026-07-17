@@ -74,8 +74,13 @@ export const submitQuiz = async (req, res) => {
 
     let certificate = null;
     if (passed) {
+        const course = await Course.findById(courseId, "title category");
         certificate = await Certificate.create({
             course: courseId,
+            // Snapshot the course's current title/category so the certificate
+            // still displays correctly even if the course is deleted later.
+            courseTitle: course?.title || "",
+            courseCategory: course?.category || "",
             student: req.student._id,
             marks: percentage,
         });
@@ -95,12 +100,36 @@ export const submitQuiz = async (req, res) => {
     });
 };
 
+// Falls back to the snapshotted title/category when the course has been deleted,
+// so the frontend always has a course object to read from regardless.
+// Also self-heals: if a certificate predates the snapshot fields but its course
+// is still around, it backfills them now so a *future* deletion won't blank it out.
+const withCourseFallback = async (certificate) => {
+    if (!certificate) return certificate;
+    const cert = certificate.toObject ? certificate.toObject() : certificate;
+
+    if (cert.course && !cert.courseTitle) {
+        await Certificate.findByIdAndUpdate(cert._id, {
+            courseTitle: cert.course.title || "",
+            courseCategory: cert.course.category || "",
+        });
+    }
+
+    if (!cert.course) {
+        cert.course = {
+            title: cert.courseTitle || "Deleted course",
+            category: cert.courseCategory || "",
+        };
+    }
+    return cert;
+};
+
 export const getCertificate = async (req, res) => {
     const { courseId } = req.params;
     const certificate = await Certificate.findOne({ course: courseId, student: req.student._id })
-        .populate("course", "title")
+        .populate("course", "title category")
         .populate("student", "fullName");
-    return res.json({ success: true, certificate });
+    return res.json({ success: true, certificate: await withCourseFallback(certificate) });
 };
 
 export const getMyCertificates = async (req, res) => {
@@ -108,7 +137,8 @@ export const getMyCertificates = async (req, res) => {
         .populate("course", "title category")
         .populate("student", "fullName")
         .sort({ createdAt: -1 });
-    return res.json({ success: true, certificates });
+    const withFallback = await Promise.all(certificates.map(withCourseFallback));
+    return res.json({ success: true, certificates: withFallback });
 };
 
 export const deleteQuiz = async (req, res) => {

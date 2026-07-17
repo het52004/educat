@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/student/Dashboard.css";
 import { useAuthStore } from "../../../store/student/useAuthStore";
@@ -7,7 +7,9 @@ import { useCourseStore } from "../../../store/student/useCourseStore";
 function EnrolledCourses() {
     const navigate = useNavigate();
     const user = useAuthStore((state) => state.user);
+    const unenrollCourse = useAuthStore((state) => state.unenrollCourse);
     const { courses, loading, fetchPublishedCourses } = useCourseStore();
+    const [unenrollingId, setUnenrollingId] = useState(null);
 
     useEffect(() => {
         fetchPublishedCourses();
@@ -16,6 +18,20 @@ function EnrolledCourses() {
     const enrolledCourses = courses.filter((c) =>
         user?.enrolledCourses?.map(String).includes(String(c._id))
     );
+
+    const handleUnenroll = async (course) => {
+        const confirmed = window.confirm(
+            `Unenroll from "${course.title}"? You'll lose access to its lectures, but any certificate you've already earned for it will stay in "My Certificates".`
+        );
+        if (!confirmed) return;
+
+        setUnenrollingId(course._id);
+        const res = await unenrollCourse(course._id);
+        setUnenrollingId(null);
+        if (!res.success) {
+            alert(res.message || "Failed to unenroll. Please try again.");
+        }
+    };
 
     if (loading) {
         return <p style={{ color: "var(--text-gray)", marginTop: "20px" }}>Loading...</p>;
@@ -51,6 +67,14 @@ function EnrolledCourses() {
                                     onClick={() => navigate(`/learn/${course._id}`)}
                                 >
                                     Resume Course
+                                </button>
+                                <button
+                                    className="btn-outline"
+                                    style={{ marginTop: "8px", width: "100%", borderColor: "#ef4444", color: "#ef4444" }}
+                                    onClick={() => handleUnenroll(course)}
+                                    disabled={unenrollingId === course._id}
+                                >
+                                    {unenrollingId === course._id ? "Unenrolling..." : "Unenroll"}
                                 </button>
                             </div>
                         </div>

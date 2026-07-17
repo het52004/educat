@@ -129,6 +129,16 @@ export const useAuthStore = create((set) => ({
         }
     },
 
+    unenrollCourse: async (courseId) => {
+        try {
+            const res = await studentApi.post(`/student/unenroll/${courseId}`);
+            if (res.data.success) set({ user: res.data.studentData });
+            return res.data;
+        } catch {
+            return { success: false, message: "Something went wrong" };
+        }
+    },
+
     requestPasswordReset: async (email) => {
         try {
             set({ forgotPasswordError: "" });

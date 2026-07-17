@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../../styles/student/Login.css";
+import "../../styles/student/ForgotPassword.css";
 import studyImg from "../../../assets/images/study.png";
 import { useAuthStore } from "../../store/student/useAuthStore";
 
@@ -136,7 +137,7 @@ function ForgotPassword() {
           >
             <input
               type="submit"
-              className="btn"
+              className="btn auth-btn"
               disabled={submitting}
               value={
                 submitting

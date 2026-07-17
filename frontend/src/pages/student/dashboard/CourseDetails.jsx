@@ -11,10 +11,12 @@ export default function CourseDetails() {
     const { selectedCourse, loading, fetchCourseById } = useCourseStore();
     const user = useAuthStore((state) => state.user);
     const enrollCourse = useAuthStore((state) => state.enrollCourse);
+    const unenrollCourse = useAuthStore((state) => state.unenrollCourse);
 
     const [showModal, setShowModal] = useState(false);
     const [enrolling, setEnrolling] = useState(false);
     const [enrollMsg, setEnrollMsg] = useState({ text: "", type: "" });
+    const [unenrolling, setUnenrolling] = useState(false);
 
     useEffect(() => {
         fetchCourseById(id);
@@ -35,6 +37,20 @@ export default function CourseDetails() {
             }, 1500);
         } else {
             setEnrollMsg({ text: res.message, type: "error" });
+        }
+    };
+
+    const handleUnenroll = async () => {
+        const confirmed = window.confirm(
+            "Unenroll from this course? You'll lose access to its lectures, but any certificate you've already earned for it will stay in \"My Certificates\"."
+        );
+        if (!confirmed) return;
+
+        setUnenrolling(true);
+        const res = await unenrollCourse(id);
+        setUnenrolling(false);
+        if (!res.success) {
+            alert(res.message || "Failed to unenroll. Please try again.");
         }
     };
 
@@ -111,6 +127,14 @@ export default function CourseDetails() {
                                         onClick={() => navigate(`/learn/${id}`)}
                                     >
                                         Go to Course
+                                    </button>
+                                    <button
+                                        className="btn-outline"
+                                        style={{ marginTop: "10px", width: "100%", borderColor: "#ef4444", color: "#ef4444" }}
+                                        onClick={handleUnenroll}
+                                        disabled={unenrolling}
+                                    >
+                                        {unenrolling ? "Unenrolling..." : "Unenroll from course"}
                                     </button>
                                 </>
                             ) : (
