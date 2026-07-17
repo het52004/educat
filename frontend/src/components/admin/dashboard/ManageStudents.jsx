@@ -62,7 +62,7 @@ function ManageStudents() {
                                     <td data-label="Name" className="fw-bold">{s.fullName}</td>
                                     <td data-label="Email">{s.email}</td>
                                     <td data-label="Contact">{s.contactNumber}</td>
-                                    <td data-label="Enrolled Courses">{s.enrolledCourses?.length || 0}</td>
+                                    <td data-label="Enrolled Courses">{s.enrolledCount ?? s.enrolledCourses?.length ?? 0}</td>
                                     <td data-label="Joined">{new Date(s.createdAt).toLocaleDateString()}</td>
                                     <td data-label="Actions" className="cell-actions">
                                         <div className="action-buttons">

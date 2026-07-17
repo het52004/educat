@@ -32,6 +32,11 @@ const certificateSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+// A student can only ever hold one certificate per course. This is enforced
+// at the database level (not just in the controller check) so a race
+// condition, retry, or direct API call can never create a duplicate.
+certificateSchema.index({ student: 1, course: 1 }, { unique: true });
+
 const Certificate = mongoose.model("Certificate", certificateSchema);
 
 export default Certificate;

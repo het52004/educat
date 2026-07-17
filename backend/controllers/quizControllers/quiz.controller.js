@@ -74,20 +74,32 @@ export const submitQuiz = async (req, res) => {
 
     let certificate = null;
     if (passed) {
-        const course = await Course.findById(courseId, "title category");
-        certificate = await Certificate.create({
-            course: courseId,
-            // Snapshot the course's current title/category so the certificate
-            // still displays correctly even if the course is deleted later.
-            courseTitle: course?.title || "",
-            courseCategory: course?.category || "",
-            student: req.student._id,
-            marks: percentage,
-        });
-        // Populate for frontend download use
-        certificate = await Certificate.findById(certificate._id)
-            .populate("course", "title")
-            .populate("student", "fullName");
+        try {
+            const course = await Course.findById(courseId, "title category");
+            certificate = await Certificate.create({
+                course: courseId,
+                // Snapshot the course's current title/category so the certificate
+                // still displays correctly even if the course is deleted later.
+                courseTitle: course?.title || "",
+                courseCategory: course?.category || "",
+                student: req.student._id,
+                marks: percentage,
+            });
+            // Populate for frontend download use
+            certificate = await Certificate.findById(certificate._id)
+                .populate("course", "title")
+                .populate("student", "fullName");
+        } catch (error) {
+            // Unique index on (student, course) - a duplicate submission raced
+            // past the check above. Just return the certificate that already exists.
+            if (error?.code === 11000) {
+                certificate = await Certificate.findOne({ course: courseId, student: req.student._id })
+                    .populate("course", "title")
+                    .populate("student", "fullName");
+            } else {
+                throw error;
+            }
+        }
     }
 
     return res.json({
